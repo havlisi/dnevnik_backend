@@ -13,7 +13,7 @@ import com.iktpreobuka.projekat.repositories.AdminRepository;
 public class AdminController {
 
 	@Autowired
-	private AdminRepository adminRepository;
+	private AdminRepository adminRepository; // git branch merging test
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Iterable<AdminEntity> getAllAdmin() {
