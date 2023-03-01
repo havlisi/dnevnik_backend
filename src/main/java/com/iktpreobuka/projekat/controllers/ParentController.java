@@ -1,9 +1,6 @@
 package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +25,7 @@ public class ParentController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newParentUser")
-	public ResponseEntity<?> createParent(@Valid @RequestBody UserDTO newUser) {
+	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
 		
 		ParentEntity newParent = new ParentEntity();
 		

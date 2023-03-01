@@ -1,7 +1,6 @@
 package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class TeacherController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
-	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser) {
+	public ResponseEntity<?> createTeacher(@RequestBody UserDTO newUser) {
 		
 		TeacherEntity newTeacher = new TeacherEntity();
 		
