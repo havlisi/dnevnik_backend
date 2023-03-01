@@ -2,6 +2,7 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.iktpreobuka.projekat.entities.AdminEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
@@ -102,9 +104,9 @@ public class AdminController {
 		adminRepository.save(newAdmin);
 		return new ResponseEntity<AdminEntity>(newAdmin, HttpStatus.CREATED);
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/updateAdmin/{admin_id}")
-	public ResponseEntity<?> updateAdmin(@RequestBody UserDTO updatedUser, @PathVariable Integer admin_id, 
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateAdmin/{admin_id}")
+	public ResponseEntity<?> updateAdmin(@RequestBody UserDTO updatedUser, @PathVariable Integer admin_id,
 			@RequestParam String accessPass) {
 
 		AdminEntity admin = adminRepository.findById(admin_id).get();
@@ -122,36 +124,38 @@ public class AdminController {
 		admin.setUsername(updatedUser.getUsername());
 		admin.setEmail(updatedUser.getEmail());
 
-		if (updatedUser.getChanged_password().equals(updatedUser.getPassword())) {
+		if (updatedUser.getPassword().equals(updatedUser.getChanged_password())) {
 			admin.setPassword(updatedUser.getPassword());
 		}
 
 		adminRepository.save(admin);
 		return new ResponseEntity<AdminEntity>(admin, HttpStatus.OK);
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "deleteAdmin/by-id/{adminId}")
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{adminId}")
 	public ResponseEntity<?> deleteAdminByID(@PathVariable Integer adminId) {
-		AdminEntity admin = adminRepository.findById(adminId).get();
-		
-		if (admin == null) {
+		Optional<AdminEntity> admin = adminRepository.findById(adminId);
+
+		if (admin.isPresent()) {
+			adminRepository.delete(admin.get());
+			return new ResponseEntity<>("Admin with ID " + adminId + " has been successfully deleted.", HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>("Admin not found", HttpStatus.NOT_FOUND);
 		}
-		
-		adminRepository.delete(admin);
-		return new ResponseEntity<>("Admin with ID " + adminId + " has been successfully deleted.", HttpStatus.OK);
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "deleteAdmin/by-username/{username}")
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
 	public ResponseEntity<?> deleteAdminByUsername(@PathVariable String username) {
-		AdminEntity admin = adminRepository.findByUsername(username).get();
-		
-		if (admin == null) {
+		Optional<AdminEntity> admin = adminRepository.findByUsername(username);
+
+		if (admin.isPresent()) {
+			adminRepository.delete(admin.get());
+			return new ResponseEntity<>("Admin with " + username + " username has been successfully deleted.",
+					HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>("Admin not found", HttpStatus.NOT_FOUND);
 		}
-		
-		adminRepository.delete(admin);
-		return new ResponseEntity<>("Admin with " + username + " username has been successfully deleted.", HttpStatus.OK);
+
 	}
-	
+
 }
