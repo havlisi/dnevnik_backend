@@ -1,11 +1,14 @@
 package com.iktpreobuka.projekat.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
+import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 
 @RestController
@@ -21,10 +24,19 @@ public class ParentController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newParentUser")
-	public ParentEntity createParent(@RequestBody ParentEntity newParent) {
+	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
+		
+		ParentEntity newParent = new ParentEntity();
+		
+		newParent.setFirstName(newUser.getFirstName());
+		newParent.setLastName(newUser.getLastName());
+		newParent.setUsername(newUser.getUsername());
+		newParent.setEmail(newUser.getEmail());
+		newParent.setPassword(newUser.getPassword());
 		newParent.setRole("ROLE_PARENT");
+		
 		parentRepository.save(newParent);
-		return newParent;
+		return new ResponseEntity<ParentEntity>(newParent, HttpStatus.CREATED);
 	}
 
 }

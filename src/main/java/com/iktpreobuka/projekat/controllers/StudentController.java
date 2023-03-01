@@ -1,6 +1,8 @@
 package com.iktpreobuka.projekat.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
+import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
 
@@ -27,10 +30,19 @@ public class StudentController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newStudentUser")
-	public StudentEntity createStudent(@RequestBody StudentEntity newStudent) {
+	public ResponseEntity<?>  createStudent(@RequestBody UserDTO newUser) {
+		
+		StudentEntity newStudent = new StudentEntity();
+		
+		newStudent.setFirstName(newUser.getFirstName());
+		newStudent.setLastName(newUser.getLastName());
+		newStudent.setUsername(newUser.getUsername());
+		newStudent.setEmail(newUser.getEmail());
+		newStudent.setPassword(newUser.getPassword());
+		
 		newStudent.setRole("ROLE_STUDENT");
 		studentRepository.save(newStudent);
-		return newStudent;
+		return new ResponseEntity<StudentEntity>(newStudent, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/studentsParent/{parents_id}/{students_id}")
