@@ -1,6 +1,7 @@
 package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
@@ -21,13 +23,80 @@ public class StudentController {
 
 	@Autowired
 	private StudentRepository studentRepository;
-	
+
 	@Autowired
 	private ParentRepository parentRepository;
+	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllStudents() {
 		return new ResponseEntity<List<StudentEntity>>((List<StudentEntity>) studentRepository.findAll(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")
+	public ResponseEntity<?> getStudentsById(@PathVariable Integer id) {
+		Optional<StudentEntity> student = studentRepository.findById(id);
+		
+		if (student.isPresent()) {
+			return new ResponseEntity<>(student.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/by-username/{username}")
+	public ResponseEntity<?> getStudentByUsername(@PathVariable String username) {
+		Optional<StudentEntity> student = studentRepository.findByUsername(username);
+		
+		if (student.isPresent()) {
+			return new ResponseEntity<>(student.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/by-firstName/{firstName}")
+	public ResponseEntity<?> getStudentByFirstName(@PathVariable String firstName) {
+		List<StudentEntity> students = studentRepository.findByFirstName(firstName);
+		
+		if (students.isEmpty()) {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(students, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/by-lastName/{lastName}")
+	public ResponseEntity<?> getStudentByLastName(@PathVariable String lastName) {
+		List<StudentEntity> students = studentRepository.findByLastName(lastName);
+		
+		if (students.isEmpty()) {
+			return new ResponseEntity<>("No students found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(students, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/by-firstLetter/{firstLetter}")
+	public ResponseEntity<?> getStudentByFirstLetter(@PathVariable String firstLetter) {
+		List<StudentEntity> students = studentRepository.findByFirstNameStartingWith(firstLetter);
+		
+		if (students.isEmpty()) {
+			return new ResponseEntity<>("No students found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(students, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/by-email/{email}")
+	public ResponseEntity<?> getByEmail(@PathVariable String email) {
+		Optional<StudentEntity> student = studentRepository.findByEmail(email);
+		
+		if (student.isPresent()) {
+			return new ResponseEntity<>(student.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newStudentUser")
@@ -46,18 +115,80 @@ public class StudentController {
 		return new ResponseEntity<StudentEntity>(newStudent, HttpStatus.CREATED);
 	}
 	
+	//TODO testirati:
+	
 	@RequestMapping(method = RequestMethod.PUT, value = "/studentsParent/{parents_id}/{students_id}")
-	public StudentEntity setStudentsParent(@PathVariable Integer parents_id, @PathVariable Integer students_id) {
+	public ResponseEntity<?> setStudentsParent(@PathVariable Integer parents_id, @PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).get();
 		ParentEntity parent = parentRepository.findById(parents_id).get();
 		
-		if (student == null || parent == null ) {
-			return null;
+		if (student == null) {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
+		}
+		
+		if (parent == null) {
+			return new ResponseEntity<>("No parent found", HttpStatus.NOT_FOUND);
 		}
 		
 		student.setParent(parent);
 		studentRepository.save(student);
-		return student;
+		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
+	
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateParent/{id}")
+	public ResponseEntity<?> updateStudent(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
+			@RequestParam String accessPass) {
+
+		StudentEntity student = studentRepository.findById(id).get();
+
+		if (student == null) {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
+		}
+
+		if (!student.getPassword().equals(accessPass)) {
+			return new ResponseEntity<>("Password is incorrect", HttpStatus.BAD_REQUEST);
+		}
+
+		student.setFirstName(updatedUser.getFirstName());
+		student.setLastName(updatedUser.getLastName());
+		student.setUsername(updatedUser.getUsername());
+		student.setEmail(updatedUser.getEmail());
+
+		if (updatedUser.getPassword().equals(updatedUser.getChanged_password())) {
+			student.setPassword(updatedUser.getPassword());
+		}
+
+		studentRepository.save(student);
+		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{id}")
+	public ResponseEntity<?> deleteStudentByID(@PathVariable Integer id) {
+		Optional<StudentEntity> student = studentRepository.findById(id);
+
+		if (student.isPresent()) {
+			studentRepository.delete(student.get());
+			return new ResponseEntity<>("Student with ID " + id + " has been successfully deleted.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
+	public ResponseEntity<?> deleteStudentByUsername(@PathVariable String username) {
+		Optional<StudentEntity> student = studentRepository.findByUsername(username);
+
+		if (student.isPresent()) {
+			studentRepository.delete(student.get());
+			return new ResponseEntity<>("Student with " + username + " username has been successfully deleted.",
+					HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
+	//TODO dodati delete roditelja sa id-om
 
 }
