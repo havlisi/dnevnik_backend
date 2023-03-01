@@ -1,5 +1,9 @@
 package com.iktpreobuka.projekat.controllers;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +23,12 @@ public class ParentController {
 	private ParentRepository parentRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Iterable<ParentEntity> getAllParents() {
-		return parentRepository.findAll();
+	public ResponseEntity<?> getAllParents() {
+		return new ResponseEntity<List<ParentEntity>>((List<ParentEntity>) parentRepository.findAll(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newParentUser")
-	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
+	public ResponseEntity<?> createParent(@Valid @RequestBody UserDTO newUser) {
 		
 		ParentEntity newParent = new ParentEntity();
 		

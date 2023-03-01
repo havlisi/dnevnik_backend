@@ -1,5 +1,7 @@
 package com.iktpreobuka.projekat.controllers;
 
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,12 @@ public class AdminController {
 	private AdminRepository adminRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Iterable<AdminEntity> getAllAdmin() {
-		return adminRepository.findAll();
+	public ResponseEntity<?> getAllAdmin() {
+		return new ResponseEntity<List<AdminEntity>>((List<AdminEntity>) adminRepository.findAll(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newAdminUser")
-	public ResponseEntity<?> createAdmin(@RequestBody UserDTO newUser) {
+	public ResponseEntity<?> createAdmin(@Valid @RequestBody UserDTO newUser) {
 		
 		AdminEntity newAdmin = new AdminEntity();
 

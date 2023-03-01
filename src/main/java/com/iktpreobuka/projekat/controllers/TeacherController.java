@@ -1,5 +1,7 @@
 package com.iktpreobuka.projekat.controllers;
 
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,12 @@ public class TeacherController {
 	private TeacherRepository teacherRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Iterable<TeacherEntity> getAllTeachers() {
-		return teacherRepository.findAll();
+	public ResponseEntity<?> getAllTeachers() {
+		return new ResponseEntity<List<TeacherEntity>>((List<TeacherEntity>) teacherRepository.findAll(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
-	public ResponseEntity<?> createTeacher(@RequestBody UserDTO newUser) {
+	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser) {
 		
 		TeacherEntity newTeacher = new TeacherEntity();
 		

@@ -11,6 +11,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
@@ -41,6 +43,7 @@ public class UserEntity {
 	@NotNull(message = "Password must be provided.")
 	@Size(min = 5, max = 15, message = "Password must be between "
 			+ "{min} and {max} characters long.")
+	@JsonIgnore
 	private String password;
 	
 	@Column(nullable = false)
@@ -48,19 +51,21 @@ public class UserEntity {
 
 	public UserEntity() {}
 	
-	public UserEntity(Integer id, String role,
+	public UserEntity(Integer id,
 			@NotNull(message = "First name must be provided.") @Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long.") String firstName,
 			@NotNull(message = "Last name must be provided.") @Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long.") String lastName,
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
 			@NotNull(message = "Please provide email address.") @Email(message = "Email is not valid.") String email,
-			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String password) {
+			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String password,
+			String role) {
+		super();
 		this.id = id;
-		this.role = role;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.role = role;
 	}
 
 	public Integer getId() {
