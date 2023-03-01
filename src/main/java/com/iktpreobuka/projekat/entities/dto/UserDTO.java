@@ -1,25 +1,11 @@
-package com.iktpreobuka.projekat.entities;
+package com.iktpreobuka.projekat.entities.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class UserEntity {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+public class UserDTO {
 	
 	@NotNull(message = "First name must be provided.")
 	@Size(min = 2, max = 30, message = "First name must be between "
@@ -43,37 +29,34 @@ public class UserEntity {
 	@NotNull(message = "Password must be provided.")
 	@Size(min = 5, max = 15, message = "Password must be between "
 			+ "{min} and {max} characters long.")
-	@JsonIgnore
 	private String password;
+	
+	@NotNull(message = "Password must be provided.")
+	@Size(min = 5, max = 15, message = "Password must be between "
+			+ "{min} and {max} characters long.")
+	private String changed_password;
 	
 	@Column(nullable = false)
 	private String role;
-
-	public UserEntity() {}
 	
-	public UserEntity(Integer id,
+	public UserDTO() {}
+
+	public UserDTO(
 			@NotNull(message = "First name must be provided.") @Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long.") String firstName,
 			@NotNull(message = "Last name must be provided.") @Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long.") String lastName,
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
 			@NotNull(message = "Please provide email address.") @Email(message = "Email is not valid.") String email,
 			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String password,
+			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String changed_password,
 			String role) {
 		super();
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.changed_password = changed_password;
 		this.role = role;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -114,6 +97,14 @@ public class UserEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getChanged_password() {
+		return changed_password;
+	}
+
+	public void setChanged_password(String changed_password) {
+		this.changed_password = changed_password;
 	}
 
 	public String getRole() {
