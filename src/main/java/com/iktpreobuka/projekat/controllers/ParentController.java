@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
+import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
+import com.iktpreobuka.projekat.repositories.StudentRepository;
 
 @RestController
 @RequestMapping(path = "/api/project/parent")
@@ -21,6 +23,9 @@ public class ParentController {
 
 	@Autowired
 	private ParentRepository parentRepository;
+	
+	@Autowired
+	private StudentRepository studentRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllParents() {
@@ -141,8 +146,6 @@ public class ParentController {
 		parentRepository.save(parent);
 		return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
 	}
-	
-	//TODO dodati set student - parents child rest endpoint
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteParent/by-id/{id}")
 	public ResponseEntity<?> deleteParentByID(@PathVariable Integer id) {

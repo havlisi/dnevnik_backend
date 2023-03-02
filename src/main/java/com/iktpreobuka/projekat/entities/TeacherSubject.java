@@ -18,8 +18,11 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @DiscriminatorValue("teacher_subject")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeacherSubject {
 	
 	@Id
