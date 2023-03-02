@@ -104,6 +104,16 @@ public class StudentController {
 		
 		StudentEntity newStudent = new StudentEntity();
 		
+		StudentEntity existingStudentWithEmail = studentRepository.findByEmail(newUser.getEmail()).orElse(null);
+		if (existingStudentWithEmail != null && newUser.getEmail().equals(existingStudentWithEmail.getEmail())) {
+		    return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+		}
+
+		StudentEntity existingStudentWithUsername = studentRepository.findByUsername(newUser.getUsername()).orElse(null);
+		if (existingStudentWithUsername != null && newUser.getUsername().equals(existingStudentWithUsername.getUsername())) {
+		    return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+		}
+		
 		newStudent.setFirstName(newUser.getFirstName());
 		newStudent.setLastName(newUser.getLastName());
 		newStudent.setUsername(newUser.getUsername());
@@ -136,11 +146,11 @@ public class StudentController {
 	}
 	
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/updateParent/{id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateStudent/{id}")
 	public ResponseEntity<?> updateStudent(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
 			@RequestParam String accessPass) {
 
-		StudentEntity student = studentRepository.findById(id).get();
+		StudentEntity student = studentRepository.findById(id).orElse(null);;
 
 		if (student == null) {
 			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
@@ -163,7 +173,7 @@ public class StudentController {
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteStudent/by-id/{id}")
 	public ResponseEntity<?> deleteStudentByID(@PathVariable Integer id) {
 		Optional<StudentEntity> student = studentRepository.findById(id);
 
@@ -175,7 +185,7 @@ public class StudentController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteStudent/by-username/{username}")
 	public ResponseEntity<?> deleteStudentByUsername(@PathVariable String username) {
 		Optional<StudentEntity> student = studentRepository.findByUsername(username);
 
