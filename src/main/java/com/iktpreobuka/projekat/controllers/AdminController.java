@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iktpreobuka.projekat.entities.AdminEntity;
+import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
 
@@ -93,6 +94,16 @@ public class AdminController {
 	public ResponseEntity<?> createAdmin(@RequestBody UserDTO newUser) {
 
 		AdminEntity newAdmin = new AdminEntity();
+		
+		AdminEntity existingAdminWithEmail = adminRepository.findByEmail(newUser.getEmail()).orElse(null);
+		if (existingAdminWithEmail != null && newUser.getEmail().equals(existingAdminWithEmail.getEmail())) {
+		    return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+		}
+
+		AdminEntity existingAdminWithUsername = adminRepository.findByUsername(newUser.getUsername()).orElse(null);
+		if (existingAdminWithUsername != null && newUser.getUsername().equals(existingAdminWithUsername.getUsername())) {
+		    return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+		}
 
 		newAdmin.setFirstName(newUser.getFirstName());
 		newAdmin.setLastName(newUser.getLastName());
@@ -109,7 +120,7 @@ public class AdminController {
 	public ResponseEntity<?> updateAdmin(@RequestBody UserDTO updatedUser, @PathVariable Integer admin_id,
 			@RequestParam String accessPass) {
 
-		AdminEntity admin = adminRepository.findById(admin_id).get();
+		AdminEntity admin = adminRepository.findById(admin_id).orElse(null);
 
 		if (admin == null) {
 			return new ResponseEntity<>("No admin found", HttpStatus.NOT_FOUND);

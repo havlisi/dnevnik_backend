@@ -2,7 +2,6 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +93,16 @@ public class ParentController {
 	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
 
 		ParentEntity newParent = new ParentEntity();
+		
+		ParentEntity existingParentWithEmail = parentRepository.findByEmail(newUser.getEmail()).orElse(null);
+		if (existingParentWithEmail != null && newUser.getEmail().equals(existingParentWithEmail.getEmail())) {
+		    return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+		}
+
+		ParentEntity existingParentWithUsername = parentRepository.findByUsername(newUser.getUsername()).orElse(null);
+		if (existingParentWithUsername != null && newUser.getUsername().equals(existingParentWithUsername.getUsername())) {
+		    return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+		}
 
 		newParent.setFirstName(newUser.getFirstName());
 		newParent.setLastName(newUser.getLastName());
@@ -110,7 +119,7 @@ public class ParentController {
 	public ResponseEntity<?> updateParent(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
 			@RequestParam String accessPass) {
 
-		ParentEntity parent = parentRepository.findById(id).get();
+		ParentEntity parent = parentRepository.findById(id).orElse(null);;
 
 		if (parent == null) {
 			return new ResponseEntity<>("No parent found", HttpStatus.NOT_FOUND);
@@ -135,7 +144,7 @@ public class ParentController {
 	
 	//TODO dodati set student - parents child rest endpoint
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteParent/by-id/{id}")
 	public ResponseEntity<?> deleteParentByID(@PathVariable Integer id) {
 		Optional<ParentEntity> parent = parentRepository.findById(id);
 
@@ -147,7 +156,7 @@ public class ParentController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteParent/by-username/{username}")
 	public ResponseEntity<?> deleteParentByUsername(@PathVariable String username) {
 		Optional<ParentEntity> parent = parentRepository.findByUsername(username);
 

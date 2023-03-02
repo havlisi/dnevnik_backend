@@ -24,9 +24,10 @@ public class TeacherController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
-		return new ResponseEntity<List<TeacherEntity>>((List<TeacherEntity>) teacherRepository.findAll(), HttpStatus.OK);
+		return new ResponseEntity<List<TeacherEntity>>((List<TeacherEntity>) teacherRepository.findAll(),
+				HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")
 	public ResponseEntity<?> getTeacherById(@PathVariable Integer id) {
 		Optional<TeacherEntity> teacher = teacherRepository.findById(id);
@@ -86,28 +87,39 @@ public class TeacherController {
 			return new ResponseEntity<>("No teacher found", HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
 	public ResponseEntity<?> createTeacher(@RequestBody UserDTO newUser) {
-		
+
 		TeacherEntity newTeacher = new TeacherEntity();
+
+		TeacherEntity existingTeacherWithEmail = teacherRepository.findByEmail(newUser.getEmail()).orElse(null);
+		if (existingTeacherWithEmail != null && newUser.getEmail().equals(existingTeacherWithEmail.getEmail())) {
+		    return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+		}
+
+		TeacherEntity existingTeacherWithUsername = teacherRepository.findByUsername(newUser.getUsername()).orElse(null);
+		if (existingTeacherWithUsername != null && newUser.getUsername().equals(existingTeacherWithUsername.getUsername())) {
+		    return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+		}
 		
 		newTeacher.setFirstName(newUser.getFirstName());
 		newTeacher.setLastName(newUser.getLastName());
 		newTeacher.setUsername(newUser.getUsername());
 		newTeacher.setEmail(newUser.getEmail());
 		newTeacher.setPassword(newUser.getPassword());
-		
+
 		newTeacher.setRole("ROLE_TEACHER");
 		teacherRepository.save(newTeacher);
 		return new ResponseEntity<TeacherEntity>(newTeacher, HttpStatus.CREATED);
+		
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacher/{id}")
 	public ResponseEntity<?> updateTeacher(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
 			@RequestParam String accessPass) {
 
-		TeacherEntity teacher = teacherRepository.findById(id).get();
+		TeacherEntity teacher = teacherRepository.findById(id).orElse(null);
 
 		if (teacher == null) {
 			return new ResponseEntity<>("No teacher found", HttpStatus.NOT_FOUND);
@@ -129,6 +141,8 @@ public class TeacherController {
 		teacherRepository.save(teacher);
 		return new ResponseEntity<TeacherEntity>(teacher, HttpStatus.OK);
 	}
+
+	// TODO dodati metodu za postavljanje predmeta profesoru
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-id/{id}")
 	public ResponseEntity<?> deleteTeacherByID(@PathVariable Integer id) {
