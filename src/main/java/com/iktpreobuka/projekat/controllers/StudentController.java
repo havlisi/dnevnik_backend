@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
+import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
+import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 
 @RestController
 @RequestMapping(path = "/api/project/student")
@@ -26,6 +28,10 @@ public class StudentController {
 
 	@Autowired
 	private ParentRepository parentRepository;
+	
+	@Autowired
+	private TeacherSubjectRepository teacherSubjectRepository;
+	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllStudents() {
@@ -146,6 +152,25 @@ public class StudentController {
 		}
 
 		student.setParent(parent);
+		studentRepository.save(student);
+		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/studentsTeachingSubj/{teachSubj_id}/{students_id}")
+	public ResponseEntity<?> setStudentsTeachingSubj(@PathVariable Integer teachSubj_id, 
+			@PathVariable Integer students_id) {
+		StudentEntity student = studentRepository.findById(students_id).orElse(null);
+		TeacherSubject teacherSubject = teacherSubjectRepository.findById(teachSubj_id).orElse(null);
+		
+		if (teacherSubject == null) {
+			return new ResponseEntity<>("No teaching subject with " + teachSubj_id + " ID found", HttpStatus.NOT_FOUND);
+		}
+
+		if (student == null) {
+			return new ResponseEntity<>("No student with " + students_id + " ID found", HttpStatus.NOT_FOUND);
+		}
+
+		student.getTeacherSubjects().add(teacherSubject);
 		studentRepository.save(student);
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
