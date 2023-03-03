@@ -61,7 +61,7 @@ public class SubjectController {
 		subject.setFondCasova(updatedSubject.getFondCasova());
 
 		subjectRepository.save(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-id/{id}")
@@ -73,7 +73,7 @@ public class SubjectController {
 		}
 
 		subjectRepository.delete(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-name/{name}")
@@ -85,7 +85,7 @@ public class SubjectController {
 		}
 
 		subjectRepository.delete(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
 	}
 	
 }

@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.iktpreobuka.projekat.entities.GradeEntity;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
+import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
-import com.iktpreobuka.projekat.entities.dto.SubjectDTO;
 import com.iktpreobuka.projekat.entities.dto.TeacherSubjectDTO;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
@@ -45,56 +43,63 @@ public class TeacherSubjectController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject")
-	public ResponseEntity<?> createTeacherSubject(@RequestBody TeacherSubjectDTO newTeacherSubject) {		
+	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject/{subj_id}/{teacher_id}")
+	public ResponseEntity<?> createTeacherSubject(@RequestBody TeacherSubjectDTO newTeacherSubject,
+			@PathVariable Integer teacher_id, @PathVariable Integer subj_id) {				
+		TeacherEntity teacher = teacherRepository.findById(teacher_id).orElse(null);
+		SubjectEntity subject = subjectRepository.findById(subj_id).orElse(null);
+
+		if (teacher == null) {
+			return new ResponseEntity<>("No teacher found", HttpStatus.NOT_FOUND);
+		}
+
+		if (subject == null) {
+			return new ResponseEntity<>("No subject found", HttpStatus.NOT_FOUND);
+		}
+		
 		TeacherSubject teacherSubjects = new TeacherSubject();
 		
 		teacherSubjects.setClassYear(newTeacherSubject.getClassYear());
-		teacherSubjects.setSubject(newTeacherSubject.getSubject()); //ubaciti preko id-a
-		teacherSubjects.setTeacher(newTeacherSubject.getTeacher());
+		teacherSubjects.setSubject(subject);
+		teacherSubjects.setTeacher(teacher);
 
 		teacherSubjectRepository.save(teacherSubjects);
 		return new ResponseEntity<TeacherSubject>(teacherSubjects, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacherSubject/{id}")
-	public ResponseEntity<?> updateTeacherSubject(@RequestBody SubjectDTO updatedSubject,
+	public ResponseEntity<?> updateTeacherSubject(@RequestBody TeacherSubjectDTO updatedTeacherSubject,
 			@PathVariable Integer id) {		
-		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
+		TeacherSubject teacherSubjects = teacherSubjectRepository.findById(id).orElse(null);
 		
-		if (subject == null) {
-			return new ResponseEntity<>("No subject with " + id + " ID found", HttpStatus.NOT_FOUND);
+		if (teacherSubjects == null) {
+			return new ResponseEntity<>("No teaching subject with " + id + " ID found", HttpStatus.NOT_FOUND);
 		}
 		
-		subject.setSubjectName(updatedSubject.getSubjectName());
-		subject.setFondCasova(updatedSubject.getFondCasova());
-
-		subjectRepository.save(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		teacherSubjects.setClassYear(updatedTeacherSubject.getClassYear());
+		
+		if (updatedTeacherSubject.getSubject() != null) {
+			teacherSubjects.setSubject(updatedTeacherSubject.getSubject());
+		}
+		
+		if (updatedTeacherSubject.getTeacher() != null) {
+			teacherSubjects.setTeacher(updatedTeacherSubject.getTeacher());
+		}
+		
+		teacherSubjectRepository.save(teacherSubjects);
+		return new ResponseEntity<TeacherSubject>(teacherSubjects, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteTeacherSubject/{id}")
 	public ResponseEntity<?> deleteTeacherSubject(@PathVariable Integer id) {		
-		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
+		TeacherSubject teacherSubjects = teacherSubjectRepository.findById(id).orElse(null);
 		
-		if (subject == null) {
-			return new ResponseEntity<>("No subject with " + id + " ID found", HttpStatus.NOT_FOUND);
+		if (teacherSubjects == null) {
+			return new ResponseEntity<>("No teaching subject with " + id + " ID found", HttpStatus.NOT_FOUND);
 		}
 
-		subjectRepository.delete(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
-	}
-	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteTeacherSubject/{name}")
-	public ResponseEntity<?> deleteTeacherSubjectByName(@PathVariable String name) {		
-		SubjectEntity subject = subjectRepository.findBySubjectName(name);
-		
-		if (subject == null) {
-			return new ResponseEntity<>("No subject called " + name + " found", HttpStatus.NOT_FOUND);
-		}
-
-		subjectRepository.delete(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		teacherSubjectRepository.delete(teacherSubjects);
+		return new ResponseEntity<>("Teaching subject with id " + id + " was successfully removed", HttpStatus.OK);
 	}
 	
 }

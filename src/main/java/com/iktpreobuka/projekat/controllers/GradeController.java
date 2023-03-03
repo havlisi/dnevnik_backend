@@ -99,7 +99,7 @@ public class GradeController {
 
 		student.getGrades().add(newGrade); // ako ne radi, do ovoga je
 		studentRepository.save(student);			
-		return new ResponseEntity<>(newGrade, HttpStatus.OK);
+		return new ResponseEntity<>(newGrade, HttpStatus.CREATED);
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
