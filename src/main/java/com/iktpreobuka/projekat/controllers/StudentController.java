@@ -206,15 +206,15 @@ public class StudentController {
 			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
 		}
 		
-		 ParentEntity parent = student.getParent();
+		ParentEntity parent = student.getParent();
 		 
-	    if (parent == null || !parent.getId().equals(parents_id)) {
-	        return new ResponseEntity<>("No parent found with id " + parents_id + " for student with id " + students_id, HttpStatus.NOT_FOUND);
-	    }
+		if (parent == null || !parent.getId().equals(parents_id)) {
+	       return new ResponseEntity<>("No parent found with id " + parents_id + " for student with id " + students_id, HttpStatus.NOT_FOUND);
+		}
 
-	    student.setParent(null);
-	    studentRepository.save(student);
-	    return new ResponseEntity<>("Parent with id " + parents_id + " was successfully removed from student with id " + students_id, HttpStatus.OK);
+		student.setParent(null);
+		studentRepository.save(student);
+		return new ResponseEntity<>("Parent with id " + parents_id + " was successfully removed from student with id " + students_id, HttpStatus.OK);
 	}
 
 }
