@@ -92,8 +92,22 @@ public class ParentController {
 		}
 	}
 	
-	//TODO by child
+	@RequestMapping(method = RequestMethod.GET, value = "/by-student/{student_id}")
+	public ResponseEntity<?> getParentByStudent(@PathVariable Integer student_id) {
+		StudentEntity student = studentRepository.findById(student_id).orElse(null);
+	    ParentEntity parent = parentRepository.findByStudent(student);
 
+		if (student == null) {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
+		}
+		
+		if (parent == null) {
+	    	return new ResponseEntity<>("No parent found", HttpStatus.NOT_FOUND);
+		}
+		
+	    return new ResponseEntity<>(parent, HttpStatus.OK);
+	}
+	    
 	@RequestMapping(method = RequestMethod.POST, value = "/newParentUser")
 	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import com.iktpreobuka.projekat.entities.ParentEntity;
+import com.iktpreobuka.projekat.entities.StudentEntity;
 
 public interface ParentRepository extends CrudRepository<ParentEntity, Integer>{
 
@@ -18,5 +19,6 @@ public interface ParentRepository extends CrudRepository<ParentEntity, Integer>{
 
 	Optional<ParentEntity> findByEmail(String email);
 
+	ParentEntity findByStudent(StudentEntity student);
 
 }
