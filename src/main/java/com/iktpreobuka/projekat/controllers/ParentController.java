@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
+import com.iktpreobuka.projekat.entities.SubjectEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
@@ -29,7 +30,13 @@ public class ParentController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllParents() {
-		return new ResponseEntity<List<ParentEntity>>((List<ParentEntity>) parentRepository.findAll(), HttpStatus.OK);
+		List<ParentEntity> parents = (List<ParentEntity>) parentRepository.findAll();
+
+		if (parents.isEmpty()) {
+			return new ResponseEntity<>("No parents found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(parents, HttpStatus.OK);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")

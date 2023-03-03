@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iktpreobuka.projekat.entities.AdminEntity;
+import com.iktpreobuka.projekat.entities.SubjectEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
@@ -27,7 +28,13 @@ public class AdminController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAdmin() {
-		return new ResponseEntity<List<AdminEntity>>((List<AdminEntity>) adminRepository.findAll(), HttpStatus.OK);
+		List<AdminEntity> admins = (List<AdminEntity>) adminRepository.findAll();
+		 
+	    if (admins.isEmpty()) {
+	        return new ResponseEntity<>("No admins found", HttpStatus.NOT_FOUND);
+	    } else {
+	        return new ResponseEntity<>(admins, HttpStatus.OK);
+	    }
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{adminId}")

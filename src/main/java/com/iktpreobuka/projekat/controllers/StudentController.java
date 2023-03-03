@@ -29,8 +29,13 @@ public class StudentController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllStudents() {
-		return new ResponseEntity<List<StudentEntity>>((List<StudentEntity>) studentRepository.findAll(),
-				HttpStatus.OK);
+		List<StudentEntity> students = (List<StudentEntity>) studentRepository.findAll();
+
+		if (students.isEmpty()) {
+			return new ResponseEntity<>("No students found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(students, HttpStatus.OK);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")

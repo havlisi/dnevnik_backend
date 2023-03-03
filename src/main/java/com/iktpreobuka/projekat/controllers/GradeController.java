@@ -1,6 +1,10 @@
 package com.iktpreobuka.projekat.controllers;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,97 +32,119 @@ public class GradeController {
 	private TeacherSubjectRepository teacherSubjectRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Iterable<GradeEntity> getAllGrades() {
-		return gradeRepository.findAll();
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentName")
-	public Iterable<GradeEntity> getGradesByStudentName(@RequestParam String studentFName, @RequestParam String studentLName) {
-		StudentEntity student = studentRepository.findByFirstNameAndLastName(studentFName, studentLName);
-		return student.getGrades();
-	}
-	
-	//TODO dodati svuda https / eo
+	public ResponseEntity<?> getAllGrades() {
+		List<GradeEntity> grades = (List<GradeEntity>) gradeRepository.findAll();
 
-	//@Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
+		if (grades.isEmpty()) {
+			return new ResponseEntity<>("No grades found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(grades, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentName")
+	public ResponseEntity<?> getGradesByStudentName(@RequestParam String studentFName,
+			@RequestParam String studentLName) {
+		Optional<StudentEntity> student = studentRepository.findByFirstNameAndLastName(studentFName, studentLName);
+		
+		if (student.isPresent()) {
+			List<GradeEntity> grades = student.get().getGrades();
+
+			if (grades.isEmpty()) {
+				return new ResponseEntity<>("Grades for student " + studentFName + " " + studentLName + " not found",
+						HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<>(grades, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>("Student " + studentFName + " " + studentLName + " not found",
+				HttpStatus.NOT_FOUND);
+
+	}
+
+
+	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/{student_id}/{teachsubj_id}")
-	public GradeEntity createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
+	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
 		StudentEntity student = studentRepository.findById(student_id).get();
 		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).get();
-		
-		if (student == null || teachingSubject == null ) {
-			return null;
+
+		if (student == null) {
+			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
 		}
 		
+		if (teachingSubject == null) {
+			return new ResponseEntity<>("No teaching subject found", HttpStatus.NOT_FOUND);
+		}
+
 		boolean daLiSeTeachingSubjectNalaziUListi = false;
-		
+
 		for (TeacherSubject teacherSubject : student.getTeacherSubjects()) {
 			if (teacherSubject.getId().equals(teachingSubject.getId())) {
 				daLiSeTeachingSubjectNalaziUListi = true;
 			}
 		}
 		if (!daLiSeTeachingSubjectNalaziUListi) {
-			System.out.println("Student " + student.getFirstName() + " " + student.getLastName()
-			+ " is not taking the class that this teacher is teaching.");
-			return null;
+			return new ResponseEntity<>("Student " + student.getFirstName() + " " + student.getLastName()
+			+ " is not taking the class that this teacher is teaching.", HttpStatus.NOT_FOUND);
 		}
-		
+
 		GradeEntity newGrade = new GradeEntity();
-		
+
 		newGrade.setFirstSemester(firstSemester);
 		newGrade.setTeacherSubject(teachingSubject);
 		newGrade.setStudent(student);
 		newGrade.setGrade(gradeValue);
 
-		student.getGrades().add(newGrade); // ako ne radi, do ovoga je		
-		studentRepository.save(student);
-		return newGrade;
+		student.getGrades().add(newGrade); // ako ne radi, do ovoga je
+		studentRepository.save(student);			
+		return new ResponseEntity<>(newGrade, HttpStatus.OK);
 	}
 
-	//@Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
+	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateGrade/{student_id}/{teachsubj_id}/{grade_id}")
-	public GradeEntity updateGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
+	public ResponseEntity<?> updateGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@PathVariable Integer grade_id, @RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
 		StudentEntity student = studentRepository.findById(student_id).get();
 		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).get();
 		GradeEntity grade = gradeRepository.findById(grade_id).get();
 
 		if (grade == null) {
-			System.out.println("There is no grade with this id " + grade_id);
-			return null;
+			return new ResponseEntity<>("There is no grade with this id " + grade_id, HttpStatus.NOT_FOUND);
 		}
-		
+
 		if (grade.getTeacherSubject().getId().equals(teachingSubject.getId())) {
-			System.out.println("Grade with this id " + grade_id + " doesn't exist for this teaching subject");
-			return null;
+			return new ResponseEntity<>("Grade with this id " + grade_id 
+					+ " doesn't exist for this teaching subject", HttpStatus.NOT_FOUND);
 		}
-		
+
 		if (grade.getStudent().getId().equals(student.getId())) {
-				System.out.println("Grade with this id " + grade_id + " doesn't exist for this student");
-				return null;
-			}
-		
+			return new ResponseEntity<>("Grade with this id " + grade_id 
+					+ " doesn't exist for this student", HttpStatus.NOT_FOUND);
+		}
+
 		grade.setGrade(gradeValue);
 		grade.setFirstSemester(firstSemester);
 
 		gradeRepository.save(grade);
-		return grade;
+		return new ResponseEntity<>(grade, HttpStatus.OK);
 	}
-	
+
 //	@Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteGrade/{grade_id}")
-	public GradeEntity deleteGrade(@PathVariable Integer grade_id) {
+	public ResponseEntity<?> deleteGrade(@PathVariable Integer grade_id) {
 		GradeEntity grade = gradeRepository.findById(grade_id).get();
-		
+
 		if (grade == null) {
-			return null;
+			return new ResponseEntity<>("Grade with this id " + grade_id 
+					+ " doesn't exist", HttpStatus.NOT_FOUND);
 		}
-		
+
 		// TODO proveriti da li ta ocena pripada tom nastavniku
 		// tj da li taj nastavnik sme da je brise ocenu
-		
+
 		gradeRepository.delete(grade);
-		return grade;
+		return new ResponseEntity<>(grade, HttpStatus.OK);
 	}
 }
