@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
@@ -24,8 +26,13 @@ public class TeacherController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
-		return new ResponseEntity<List<TeacherEntity>>((List<TeacherEntity>) teacherRepository.findAll(),
-				HttpStatus.OK);
+		List<TeacherEntity> teachers = (List<TeacherEntity>) teacherRepository.findAll();
+
+		if (teachers.isEmpty()) {
+			return new ResponseEntity<>("No teachers found", HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(teachers, HttpStatus.OK);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")
@@ -95,14 +102,16 @@ public class TeacherController {
 
 		TeacherEntity existingTeacherWithEmail = teacherRepository.findByEmail(newUser.getEmail()).orElse(null);
 		if (existingTeacherWithEmail != null && newUser.getEmail().equals(existingTeacherWithEmail.getEmail())) {
-		    return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
 		}
 
-		TeacherEntity existingTeacherWithUsername = teacherRepository.findByUsername(newUser.getUsername()).orElse(null);
-		if (existingTeacherWithUsername != null && newUser.getUsername().equals(existingTeacherWithUsername.getUsername())) {
-		    return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+		TeacherEntity existingTeacherWithUsername = teacherRepository.findByUsername(newUser.getUsername())
+				.orElse(null);
+		if (existingTeacherWithUsername != null
+				&& newUser.getUsername().equals(existingTeacherWithUsername.getUsername())) {
+			return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
 		}
-		
+
 		newTeacher.setFirstName(newUser.getFirstName());
 		newTeacher.setLastName(newUser.getLastName());
 		newTeacher.setUsername(newUser.getUsername());
@@ -112,7 +121,7 @@ public class TeacherController {
 		newTeacher.setRole("ROLE_TEACHER");
 		teacherRepository.save(newTeacher);
 		return new ResponseEntity<TeacherEntity>(newTeacher, HttpStatus.CREATED);
-		
+
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacher/{id}")

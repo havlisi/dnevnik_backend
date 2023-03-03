@@ -20,24 +20,35 @@ public class SubjectController {
 	@Autowired
 	private SubjectRepository subjectRepository;
 	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllSubjects() {
-		return new ResponseEntity<List<SubjectEntity>>((List<SubjectEntity>) subjectRepository.findAll(),
-				HttpStatus.OK);
+		 List<SubjectEntity> subjects = (List<SubjectEntity>) subjectRepository.findAll();
+		 
+		    if (subjects.isEmpty()) {
+		        return new ResponseEntity<>("No subjects found", HttpStatus.NOT_FOUND);
+		    } else {
+		        return new ResponseEntity<>(subjects, HttpStatus.OK);
+		    }
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
-	public ResponseEntity<?> createSubject(@RequestBody SubjectDTO newSubject) {		
-		SubjectEntity subject = new SubjectEntity();
-		
-		subject.setSubjectName(newSubject.getSubjectName());
-		subject.setFondCasova(newSubject.getFondCasova());
+	public ResponseEntity<?> createSubject(@RequestBody SubjectDTO newSubject) {
+	    SubjectEntity existingSubject = subjectRepository.findBySubjectName(newSubject.getSubjectName());
 
-		subjectRepository.save(subject);
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+	    if (existingSubject != null) {
+	        return new ResponseEntity<>("A subject with the same name already exists", HttpStatus.CONFLICT);
+	    }
+
+	    SubjectEntity subject = new SubjectEntity();
+	    subject.setSubjectName(newSubject.getSubjectName());
+	    subject.setFondCasova(newSubject.getFondCasova());
+
+	    subjectRepository.save(subject);
+	    return new ResponseEntity<>(subject, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/updateSubjcet/{id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateSubject/{id}")
 	public ResponseEntity<?> updateSubject(@RequestBody SubjectDTO updatedSubject,
 			@PathVariable Integer id) {		
 		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
@@ -53,7 +64,7 @@ public class SubjectController {
 		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubjcet/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-id/{id}")
 	public ResponseEntity<?> deleteSubject(@PathVariable Integer id) {		
 		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
 		
@@ -65,9 +76,9 @@ public class SubjectController {
 		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubjcet/{name}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-name/{name}")
 	public ResponseEntity<?> deleteSubjectByName(@PathVariable String name) {		
-		SubjectEntity subject = subjectRepository.findByName(name).orElse(null);
+		SubjectEntity subject = subjectRepository.findBySubjectName(name);
 		
 		if (subject == null) {
 			return new ResponseEntity<>("No subject called " + name + " found", HttpStatus.NOT_FOUND);
