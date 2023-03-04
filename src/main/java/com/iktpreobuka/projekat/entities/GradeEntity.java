@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -27,10 +28,12 @@ public class GradeEntity {
 	
 	private boolean firstSemester;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "student")
 	private StudentEntity student;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacherSubject")
 	private TeacherSubject teacherSubject;

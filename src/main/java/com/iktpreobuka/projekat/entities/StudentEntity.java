@@ -1,12 +1,15 @@
 package com.iktpreobuka.projekat.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -21,8 +24,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StudentEntity extends UserEntity {
 	
-	@ManyToMany(mappedBy = "student_teacherSubject")
-	private List<TeacherSubject> teacherSubjects = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+	    name = "student_teacherSubject",
+	    joinColumns = {@JoinColumn(name = "student_id")},
+	    inverseJoinColumns = {@JoinColumn(name = "teacherSubject_id")}
+	)
+	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<GradeEntity> grades = new ArrayList<>();
@@ -33,7 +41,7 @@ public class StudentEntity extends UserEntity {
 
 	public StudentEntity() {}
 
-	public StudentEntity(Integer id, String role, List<TeacherSubject> teacherSubjects, List<GradeEntity> grades, ParentEntity parent,
+	public StudentEntity(Integer id, String role, Set<TeacherSubject> teacherSubjects, List<GradeEntity> grades, ParentEntity parent,
 			@NotNull(message = "First name must be provided.") @Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long.") String firstName,
 			@NotNull(message = "Last name must be provided.") @Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long.") String lastName,
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
@@ -45,11 +53,11 @@ public class StudentEntity extends UserEntity {
 		this.parent = parent;
 	}
 
-	public List<TeacherSubject> getTeacherSubjects() {
+	public Set<TeacherSubject> getTeacherSubjects() {
 		return teacherSubjects;
 	}
 
-	public void setTeacherSubjects(List<TeacherSubject> teacherSubjects) {
+	public void setTeacherSubjects(Set<TeacherSubject> teacherSubjects) {
 		this.teacherSubjects = teacherSubjects;
 	}
 

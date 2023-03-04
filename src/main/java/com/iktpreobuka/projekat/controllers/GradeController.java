@@ -67,8 +67,8 @@ public class GradeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/{student_id}/{teachsubj_id}")
 	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
-		StudentEntity student = studentRepository.findById(student_id).get();
-		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).get();
+		StudentEntity student = studentRepository.findById(student_id).orElse(null);
+		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).orElse(null);
 
 		if (student == null) {
 			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
@@ -97,9 +97,13 @@ public class GradeController {
 		newGrade.setStudent(student);
 		newGrade.setGrade(gradeValue);
 
-		student.getGrades().add(newGrade); // ako ne radi, do ovoga je
-		studentRepository.save(student);			
-		return new ResponseEntity<>(newGrade, HttpStatus.CREATED);
+		student.getGrades().add(newGrade);
+		teachingSubject.getGrades().add(newGrade);
+		
+		gradeRepository.save(newGrade);
+		teacherSubjectRepository.save(teachingSubject);
+		studentRepository.save(student);
+		return new ResponseEntity<>(student, HttpStatus.CREATED);
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
