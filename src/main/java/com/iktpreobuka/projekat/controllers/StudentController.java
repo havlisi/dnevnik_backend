@@ -140,7 +140,7 @@ public class StudentController {
 		return new ResponseEntity<StudentEntity>(newStudent, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/studentsParent/{parents_id}/{students_id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/studentsParent/{parents_id}/student/{students_id}")
 	public ResponseEntity<?> setStudentsParent(@PathVariable Integer parents_id, @PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
 		ParentEntity parent = parentRepository.findById(parents_id).orElse(null);
@@ -158,7 +158,7 @@ public class StudentController {
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/studentsTeachingSubj/{teachSubj_id}/{students_id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/studentsTeachingSubj/teachsubj/{teachSubj_id}/student/{students_id}")
 	public ResponseEntity<?> setStudentsTeachingSubj(@PathVariable Integer teachSubj_id,
 			@PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
@@ -233,7 +233,7 @@ public class StudentController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteStudent/{parents_id}/{students_id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteStudent/parents_id/{parents_id}/students_id/{students_id}")
 	public ResponseEntity<?> deleteStudentsParent(@PathVariable Integer parents_id, @PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
 
@@ -247,8 +247,12 @@ public class StudentController {
 			return new ResponseEntity<>("No parent found with id " + parents_id + " for student with id " + students_id,
 					HttpStatus.NOT_FOUND);
 		}
+		
+		if (student.getParent().equals(parent)) {
+			parentRepository.delete(parent);
+		}
 
-		student.setParent(null);
+		parentRepository.delete(parent);
 		studentRepository.save(student);
 		return new ResponseEntity<>(
 				"Parent with id " + parents_id + " was successfully removed from student with id " + students_id,
