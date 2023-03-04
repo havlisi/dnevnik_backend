@@ -34,7 +34,7 @@ public class TeacherSubject {
 	private Integer classYear;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER )
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "teacher")
 	private TeacherEntity teacher;
 

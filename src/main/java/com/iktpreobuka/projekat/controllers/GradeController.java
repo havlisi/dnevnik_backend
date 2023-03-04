@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.iktpreobuka.projekat.entities.GradeEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
+import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.repositories.GradeRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
+import com.iktpreobuka.projekat.repositories.TeacherRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 
 @RestController
@@ -31,6 +34,10 @@ public class GradeController {
 	@Autowired
 	private TeacherSubjectRepository teacherSubjectRepository;
 
+	@Autowired
+	private TeacherRepository teacherRepository;
+	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllGrades() {
 		List<GradeEntity> grades = (List<GradeEntity>) gradeRepository.findAll();
@@ -62,9 +69,11 @@ public class GradeController {
 
 	}
 
+	
+	//
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
-	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/{student_id}/{teachsubj_id}")
+	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
 	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
 		StudentEntity student = studentRepository.findById(student_id).orElse(null);
@@ -97,8 +106,8 @@ public class GradeController {
 		newGrade.setStudent(student);
 		newGrade.setGrade(gradeValue);
 
-		student.getGrades().add(newGrade);
-		teachingSubject.getGrades().add(newGrade);
+		student.getGrades().add(newGrade); // ovde doda normalno jednu pa drugu u listu
+		teachingSubject.getGrades().add(newGrade); //doda samo ovu novu ocenu i izbrise prethodne koje su dodate u listu, overwriteuje ih
 		
 		gradeRepository.save(newGrade);
 		teacherSubjectRepository.save(teachingSubject);
@@ -107,7 +116,7 @@ public class GradeController {
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
-	@RequestMapping(method = RequestMethod.PUT, value = "/updateGrade/{student_id}/{teachsubj_id}/{grade_id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateGrade/student/{student_id}/teachsubj/{teachsubj_id}/grade/{grade_id}")
 	public ResponseEntity<?> updateGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@PathVariable Integer grade_id, @RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
 		StudentEntity student = studentRepository.findById(student_id).get();
@@ -136,19 +145,36 @@ public class GradeController {
 	}
 
 //	@Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
-	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteGrade/{grade_id}")
-	public ResponseEntity<?> deleteGrade(@PathVariable Integer grade_id) {
-		GradeEntity grade = gradeRepository.findById(grade_id).get();
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteGrade/grade/{grade_id}/teachSubj/{teachsubj_id}")
+	public ResponseEntity<?> deleteGrade(@PathVariable Integer grade_id, @PathVariable Integer teachsubj_id,
+			@RequestParam Integer teacher_id) {
+		GradeEntity grade = gradeRepository.findById(grade_id).orElse(null);
+		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).orElse(null);
+		TeacherEntity teacher = teacherRepository.findById(teacher_id).orElse(null);
 
 		if (grade == null) {
 			return new ResponseEntity<>("Grade with this id " + grade_id 
 					+ " doesn't exist", HttpStatus.NOT_FOUND);
+		} 
+		
+		if (teachingSubject == null) {
+			return new ResponseEntity<>("No teaching subject found", HttpStatus.NOT_FOUND);
 		}
-
-		// TODO proveriti da li ta ocena pripada tom nastavniku
-		// tj da li taj nastavnik sme da je brise ocenu
-
+		
+		//ovo resiti jer ne cuva vrednosti u getGrade() teacherSubj klase
+//		if (!teachingSubject.getGrades().contains(grade)) {
+//			return new ResponseEntity<>("The grade with " + grade_id + " ID doesn't exist in"
+//					+ " teaching subject with " + teachsubj_id + " ID.", HttpStatus.NOT_FOUND);
+//		}
+		
+		if (!teachingSubject.getTeacher().equals(teacher)) {
+			return new ResponseEntity<>("The teacher with " + teacher_id + " ID doesn't teach"
+					+ " teaching subject with " + teachsubj_id + " ID.", HttpStatus.FORBIDDEN);
+		}
+		
 		gradeRepository.delete(grade);
+	    teachingSubject.getGrades().remove(grade);
+		teacherSubjectRepository.save(teachingSubject);
 		return new ResponseEntity<>(grade, HttpStatus.OK);
 	}
 }
