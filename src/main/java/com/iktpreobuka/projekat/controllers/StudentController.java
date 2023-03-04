@@ -2,6 +2,8 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
@@ -28,10 +31,9 @@ public class StudentController {
 
 	@Autowired
 	private ParentRepository parentRepository;
-	
+
 	@Autowired
 	private TeacherSubjectRepository teacherSubjectRepository;
-	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllStudents() {
@@ -155,13 +157,13 @@ public class StudentController {
 		studentRepository.save(student);
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/studentsTeachingSubj/{teachSubj_id}/{students_id}")
-	public ResponseEntity<?> setStudentsTeachingSubj(@PathVariable Integer teachSubj_id, 
+	public ResponseEntity<?> setStudentsTeachingSubj(@PathVariable Integer teachSubj_id,
 			@PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
 		TeacherSubject teacherSubject = teacherSubjectRepository.findById(teachSubj_id).orElse(null);
-		
+
 		if (teacherSubject == null) {
 			return new ResponseEntity<>("No teaching subject with " + teachSubj_id + " ID found", HttpStatus.NOT_FOUND);
 		}
@@ -170,7 +172,10 @@ public class StudentController {
 			return new ResponseEntity<>("No student with " + students_id + " ID found", HttpStatus.NOT_FOUND);
 		}
 
-		student.getTeacherSubjects().add(teacherSubject);
+		Set<TeacherSubject> teacherSubjects = student.getTeacherSubjects();
+		teacherSubjects.add(teacherSubject);
+		student.setTeacherSubjects(teacherSubjects);
+
 		studentRepository.save(student);
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
@@ -231,20 +236,23 @@ public class StudentController {
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteStudent/{parents_id}/{students_id}")
 	public ResponseEntity<?> deleteStudentsParent(@PathVariable Integer parents_id, @PathVariable Integer students_id) {
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
-		
+
 		if (student == null) {
 			return new ResponseEntity<>("No student found", HttpStatus.NOT_FOUND);
 		}
-		
+
 		ParentEntity parent = student.getParent();
-		 
+
 		if (parent == null || !parent.getId().equals(parents_id)) {
-	       return new ResponseEntity<>("No parent found with id " + parents_id + " for student with id " + students_id, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("No parent found with id " + parents_id + " for student with id " + students_id,
+					HttpStatus.NOT_FOUND);
 		}
 
 		student.setParent(null);
 		studentRepository.save(student);
-		return new ResponseEntity<>("Parent with id " + parents_id + " was successfully removed from student with id " + students_id, HttpStatus.OK);
+		return new ResponseEntity<>(
+				"Parent with id " + parents_id + " was successfully removed from student with id " + students_id,
+				HttpStatus.OK);
 	}
 
 }

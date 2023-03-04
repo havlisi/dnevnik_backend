@@ -1,8 +1,9 @@
 package com.iktpreobuka.projekat.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,13 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -33,35 +32,34 @@ public class TeacherSubject {
 	@Min(value = 1, message = "Class year must be between 1 and 8")
 	@Max(value = 8, message = "Class year must be between 1 and 8")
 	private Integer classYear;
-	
+
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER )
 	@JoinColumn(name = "teacher")
 	private TeacherEntity teacher;
-	
+
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "subject")
 	private SubjectEntity subject;
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "teacherSubjects")
+	private Set<StudentEntity> students = new HashSet<>();
 	
-	@ManyToMany
-	@JoinTable(name = "student_teacherSubject", joinColumns = @JoinColumn(name = "student_id"),
-	inverseJoinColumns = @JoinColumn(name = "teacherSubject_id"))
-	private List<StudentEntity> student_teacherSubject = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "grade", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<GradeEntity> grade = new ArrayList<>();
+	@OneToMany(mappedBy = "grade", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	private List<GradeEntity> grades = new ArrayList<>();
 
 	public TeacherSubject() {}
 
-	public TeacherSubject(Integer id, TeacherEntity teacher, SubjectEntity subject, List<GradeEntity> grade, List<StudentEntity> student_teacherSubject,
+	public TeacherSubject(Integer id, TeacherEntity teacher, SubjectEntity subject, List<GradeEntity> grades, Set<StudentEntity> students,
 			@Min(value = 1, message = "Class year must be between 1 and 8") @Max(value = 8, message = "Class year must be between 1 and 8") Integer classYear) {
 		this.id = id;
 		this.classYear = classYear;
 		this.teacher = teacher;
 		this.subject = subject;
-		this.student_teacherSubject = student_teacherSubject;
-		this.grade = grade;
+		this.students = students;
+		this.grades = grades;
 	}
 
 	public Integer getId() {
@@ -96,20 +94,20 @@ public class TeacherSubject {
 		this.subject = subject;
 	}
 
-	public List<GradeEntity> getGrade() {
-		return grade;
+	public List<GradeEntity> getGrades() {
+		return grades;
 	}
 
-	public void setGrade(List<GradeEntity> grade) {
-		this.grade = grade;
+	public void setGrades(List<GradeEntity> grades) {
+		this.grades = grades;
 	}
 
-	public List<StudentEntity> getStudentTeacherSubject() {
-		return student_teacherSubject;
+	public Set<StudentEntity> getStudents() {
+		return students;
 	}
 
-	public void setStudentTeacherSubject(List<StudentEntity> student_teacherSubject) {
-		this.student_teacherSubject = student_teacherSubject;
+	public void setStudents(Set<StudentEntity> students) {
+		this.students = students;
 	}
 
 }
