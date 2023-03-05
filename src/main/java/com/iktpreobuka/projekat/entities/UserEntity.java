@@ -42,10 +42,10 @@ public class UserEntity {
 	@Email(message = "Email is not valid.")
 	private String email;
 	
+	@JsonIgnore
 	@NotNull(message = "Password must be provided.")
 	@Size(min = 5, max = 15, message = "Password must be between "
 			+ "{min} and {max} characters long.")
-	@JsonIgnore
 	private String password;
 	
 	@Column(nullable = false)
