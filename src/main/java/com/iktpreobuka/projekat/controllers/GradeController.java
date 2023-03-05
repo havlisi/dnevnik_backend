@@ -75,6 +75,12 @@ public class GradeController {
 			@RequestParam Integer sbId, @RequestParam boolean firstsemester) {
 		return gradeDaoImpl.findGradesBySemester(userId, tsId, sbId, firstsemester);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/finalGrade")
+	public List<GradeEntity> findFinalGrade(@RequestParam Integer userId, @RequestParam Integer tsId,
+			@RequestParam Integer sbId) {
+		return gradeDaoImpl.findFinalGrades(userId, tsId, sbId);
+	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
