@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.iktpreobuka.projekat.entities.GradeEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
@@ -66,11 +65,7 @@ public class GradeController {
 		}
 		return new ResponseEntity<>("Student " + studentFName + " " + studentLName + " not found",
 				HttpStatus.NOT_FOUND);
-
 	}
-
-	
-	//
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
@@ -106,8 +101,8 @@ public class GradeController {
 		newGrade.setStudent(student);
 		newGrade.setGrade(gradeValue);
 
-		student.getGrades().add(newGrade); // ovde doda normalno jednu pa drugu u listu
-		teachingSubject.getGrades().add(newGrade); //doda samo ovu novu ocenu i izbrise prethodne koje su dodate u listu, overwriteuje ih
+		student.getGrades().add(newGrade);
+		teachingSubject.getGrades().add(newGrade);
 		
 		gradeRepository.save(newGrade);
 		teacherSubjectRepository.save(teachingSubject);
@@ -161,16 +156,18 @@ public class GradeController {
 			return new ResponseEntity<>("No teaching subject found", HttpStatus.NOT_FOUND);
 		}
 		
-		//ovo resiti jer ne cuva vrednosti u getGrade() teacherSubj klase
-//		if (!teachingSubject.getGrades().contains(grade)) {
-//			return new ResponseEntity<>("The grade with " + grade_id + " ID doesn't exist in"
-//					+ " teaching subject with " + teachsubj_id + " ID.", HttpStatus.NOT_FOUND);
-//		}
+		if (!teachingSubject.getGrades().contains(grade)) {
+			return new ResponseEntity<>("The grade with " + grade_id + " ID doesn't exist in"
+					+ " teaching subject with " + teachsubj_id + " ID.", HttpStatus.NOT_FOUND);
+		}
 		
+		//token autentifikacija ipak
 		if (!teachingSubject.getTeacher().equals(teacher)) {
 			return new ResponseEntity<>("The teacher with " + teacher_id + " ID doesn't teach"
 					+ " teaching subject with " + teachsubj_id + " ID.", HttpStatus.FORBIDDEN);
 		}
+		
+		// servis pa udji u ovo deleteGrade(); i izvrsi pre ovo dole
 		
 		gradeRepository.delete(grade);
 	    teachingSubject.getGrades().remove(grade);

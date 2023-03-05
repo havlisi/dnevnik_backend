@@ -34,12 +34,12 @@ public class TeacherSubject {
 	private Integer classYear;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacher")
 	private TeacherEntity teacher;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "subject")
 	private SubjectEntity subject;
 
@@ -47,7 +47,7 @@ public class TeacherSubject {
 	@ManyToMany(mappedBy = "teacherSubjects")
 	private Set<StudentEntity> students = new HashSet<>();
 	
-	@OneToMany(mappedBy = "grade", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "teacherSubject", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<GradeEntity> grades = new ArrayList<>();
 
 	public TeacherSubject() {}
