@@ -19,6 +19,7 @@ import com.iktpreobuka.projekat.repositories.GradeRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
+import com.iktpreobuka.projekat.services.EmailServiceImpl;
 import com.iktpreobuka.projekat.services.GradeDaoImpl;
 
 @RestController
@@ -39,6 +40,10 @@ public class GradeController {
 	
 	@Autowired
 	private GradeDaoImpl gradeDaoImpl;
+	
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
+	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllGrades() {
@@ -122,6 +127,9 @@ public class GradeController {
 		gradeRepository.save(newGrade);
 		teacherSubjectRepository.save(teachingSubject);
 		studentRepository.save(student);
+		
+		emailServiceImpl.messageToParents(teachingSubject, student, gradeValue);
+		
 		return new ResponseEntity<>(student, HttpStatus.CREATED);
 	}
 
