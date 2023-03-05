@@ -2,15 +2,20 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 //import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.iktpreobuka.projekat.entities.GradeEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
@@ -90,7 +95,11 @@ public class GradeController {
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
 	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
-			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
+			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue, BindingResult result) {
+		if(result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		}
+		
 		StudentEntity student = studentRepository.findById(student_id).orElse(null);
 		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).orElse(null);
 
@@ -131,6 +140,12 @@ public class GradeController {
 		emailServiceImpl.messageToParents(teachingSubject, student, gradeValue);
 		
 		return new ResponseEntity<>(student, HttpStatus.CREATED);
+	}
+	
+	private String createErrorMessage(BindingResult result) {
+		return result.getAllErrors().stream().map(ObjectError::getDefaultMessage)
+		.collect(Collectors.joining(" "));
+
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })

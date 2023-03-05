@@ -2,9 +2,15 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,8 +121,11 @@ public class ParentController {
 	}
 	    
 	@RequestMapping(method = RequestMethod.POST, value = "/newParentUser")
-	public ResponseEntity<?> createParent(@RequestBody UserDTO newUser) {
-
+	public ResponseEntity<?> createParent(@Valid @RequestBody UserDTO newUser, BindingResult result) {
+		if(result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		}
+		
 		ParentEntity newParent = new ParentEntity();
 		
 		ParentEntity existingParentWithEmail = parentRepository.findByEmail(newUser.getEmail()).orElse(null);
@@ -139,6 +148,11 @@ public class ParentController {
 		parentRepository.save(newParent);
 		return new ResponseEntity<ParentEntity>(newParent, HttpStatus.CREATED);
 	}
+	
+	private String createErrorMessage(BindingResult result) {
+		return result.getAllErrors().stream().map(ObjectError::getDefaultMessage)
+		.collect(Collectors.joining(" "));
+		}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateParent/{id}")
 	public ResponseEntity<?> updateParent(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
