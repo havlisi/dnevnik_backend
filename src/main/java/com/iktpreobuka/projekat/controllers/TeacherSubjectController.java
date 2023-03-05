@@ -43,7 +43,7 @@ public class TeacherSubjectController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject/{subj_id}/{teacher_id}")
+	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject/subj/{subj_id}/teach/{teacher_id}")
 	public ResponseEntity<?> createTeacherSubject(@RequestBody TeacherSubjectDTO newTeacherSubject,
 			@PathVariable Integer teacher_id, @PathVariable Integer subj_id) {				
 		TeacherEntity teacher = teacherRepository.findById(teacher_id).orElse(null);

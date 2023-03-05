@@ -19,6 +19,7 @@ import com.iktpreobuka.projekat.repositories.GradeRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
+import com.iktpreobuka.projekat.services.GradeDaoImpl;
 
 @RestController
 @RequestMapping(path = "/api/project/grade")
@@ -36,6 +37,8 @@ public class GradeController {
 	@Autowired
 	private TeacherRepository teacherRepository;
 	
+	@Autowired
+	private GradeDaoImpl gradeDaoImpl;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllGrades() {
@@ -65,6 +68,12 @@ public class GradeController {
 		}
 		return new ResponseEntity<>("Student " + studentFName + " " + studentLName + " not found",
 				HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/semester")
+	public List<GradeEntity> findGradesBySemester(@RequestParam Integer userId, @RequestParam Integer tsId,
+			@RequestParam Integer sbId, @RequestParam boolean firstsemester) {
+		return gradeDaoImpl.findGradesBySemester(userId, tsId, sbId, firstsemester);
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
