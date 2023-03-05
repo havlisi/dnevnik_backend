@@ -1,0 +1,369 @@
+2023-03-05 20:18:52.997  INFO 12388 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 12388 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 20:18:53.014  INFO 12388 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 20:18:55.570  INFO 12388 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 20:18:55.813  INFO 12388 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 196 ms. Found 8 JPA repository interfaces.
+2023-03-05 20:18:57.586  INFO 12388 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 20:18:57.622  INFO 12388 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 20:18:57.623  INFO 12388 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 20:18:57.812  INFO 12388 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 20:18:57.813  INFO 12388 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4650 ms
+2023-03-05 20:18:58.450  INFO 12388 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 20:18:58.845  INFO 12388 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 20:19:00.245  INFO 12388 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 20:19:00.850  WARN 12388 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 20:19:01.303  INFO 12388 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 20:19:01.319  INFO 12388 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 9.916 seconds (JVM running for 15.012)
+2023-03-05 20:20:42.980  INFO 12388 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 20:20:42.980  INFO 12388 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 20:20:42.982  INFO 12388 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 2 ms
+2023-03-05 20:22:02.247  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 20:22:02.269  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 20:22:02.270  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 20:22:02.381  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 20:22:02.383  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 20:22:02.436  INFO 12388 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 20:22:25.388  INFO 4100 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 4100 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 20:22:25.401  INFO 4100 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 20:22:26.256  INFO 4100 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 20:22:26.356  INFO 4100 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 8 JPA repository interfaces.
+2023-03-05 20:22:27.018  INFO 4100 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 20:22:27.059  INFO 4100 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 20:22:27.060  INFO 4100 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 20:22:27.237  INFO 4100 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 20:22:27.238  INFO 4100 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1757 ms
+2023-03-05 20:22:27.890  INFO 4100 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 20:22:28.302  INFO 4100 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 20:22:29.671  INFO 4100 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 20:22:30.401  WARN 4100 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 20:22:30.929  INFO 4100 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 20:22:30.942  INFO 4100 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 6.205 seconds (JVM running for 7.722)
+2023-03-05 20:23:15.234  INFO 4100 --- [RMI TCP Connection(4)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 20:23:15.369  INFO 4100 --- [RMI TCP Connection(4)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 20:23:15.469  INFO 4100 --- [RMI TCP Connection(4)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 20:23:15.471  INFO 4100 --- [RMI TCP Connection(4)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 20:23:15.624  INFO 4100 --- [RMI TCP Connection(4)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 20:23:24.842  INFO 8952 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 8952 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 20:23:24.901  INFO 8952 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 20:23:27.999  INFO 8952 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 20:23:28.489  INFO 8952 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 383 ms. Found 8 JPA repository interfaces.
+2023-03-05 20:23:31.079  INFO 8952 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 20:23:31.152  INFO 8952 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 20:23:31.153  INFO 8952 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 20:23:31.566  INFO 8952 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 20:23:31.566  INFO 8952 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6462 ms
+2023-03-05 20:23:36.722  INFO 8952 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 20:23:37.934  INFO 8952 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 20:23:39.927  INFO 8952 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 20:23:40.549  WARN 8952 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 20:23:40.978  INFO 8952 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 20:23:40.990  INFO 8952 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 18.718 seconds (JVM running for 22.43)
+2023-03-05 20:23:47.404  INFO 8952 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 20:23:47.404  INFO 8952 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 20:23:47.406  INFO 8952 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 20:24:01.838  INFO 8952 --- [http-nio-8080-exec-3] c.i.p.s.FileDownloadController           : File is ready for download.
+2023-03-05 21:02:58.740  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:02:58.755  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:02:58.757  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:02:58.767  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:02:58.769  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:02:58.776  INFO 8952 --- [RMI TCP Connection(44)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:03:10.130  INFO 10784 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 10784 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:03:10.263  INFO 10784 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:03:13.217  INFO 10784 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:03:13.730  INFO 10784 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 437 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:03:16.489  INFO 10784 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:03:16.556  INFO 10784 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:03:16.557  INFO 10784 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:03:17.129  INFO 10784 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:03:17.129  INFO 10784 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6703 ms
+2023-03-05 21:03:23.319  INFO 10784 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:03:24.065  INFO 10784 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:03:25.737  INFO 10784 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:03:26.263  WARN 10784 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gradeController': Unsatisfied dependency expressed through field 'emailServiceImpl'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2023-03-05 21:03:26.266  INFO 10784 --- [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:03:26.269  INFO 10784 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:03:26.300  INFO 10784 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:03:26.303  INFO 10784 --- [main] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:03:26.319  INFO 10784 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-03-05 21:03:26.351 ERROR 10784 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field emailServiceImpl in com.iktpreobuka.projekat.controllers.GradeController required a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' in your configuration.
+
+2023-03-05 21:03:38.165  INFO 13548 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 13548 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:03:38.178  INFO 13548 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:03:39.080  INFO 13548 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:03:39.174  INFO 13548 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:03:39.836  INFO 13548 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:03:39.863  INFO 13548 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:03:39.864  INFO 13548 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:03:40.058  INFO 13548 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:03:40.058  INFO 13548 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1796 ms
+2023-03-05 21:03:40.634  INFO 13548 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:03:41.061  INFO 13548 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:03:42.403  INFO 13548 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:03:42.892  WARN 13548 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gradeController': Unsatisfied dependency expressed through field 'emailServiceImpl'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2023-03-05 21:03:42.895  INFO 13548 --- [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:03:42.897  INFO 13548 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:03:42.909  INFO 13548 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:03:42.912  INFO 13548 --- [main] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:03:42.928  INFO 13548 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-03-05 21:03:42.973 ERROR 13548 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field emailServiceImpl in com.iktpreobuka.projekat.controllers.GradeController required a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' in your configuration.
+
+2023-03-05 21:07:36.506  INFO 14268 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 14268 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:07:36.518  INFO 14268 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:07:37.410  INFO 14268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:07:37.505  INFO 14268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:07:38.243  INFO 14268 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:07:38.273  INFO 14268 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:07:38.274  INFO 14268 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:07:38.475  INFO 14268 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:07:38.475  INFO 14268 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1878 ms
+2023-03-05 21:07:39.092  INFO 14268 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:07:39.533  INFO 14268 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:07:41.163  INFO 14268 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:07:41.696  WARN 14268 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gradeController': Unsatisfied dependency expressed through field 'emailServiceImpl'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2023-03-05 21:07:41.699  INFO 14268 --- [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:07:41.701  INFO 14268 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:07:41.712  INFO 14268 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:07:41.714  INFO 14268 --- [main] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:07:41.729  INFO 14268 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-03-05 21:07:41.762 ERROR 14268 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field emailServiceImpl in com.iktpreobuka.projekat.controllers.GradeController required a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.iktpreobuka.projekat.services.EmailServiceImpl' in your configuration.
+
+2023-03-05 21:09:03.836  INFO 12600 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 12600 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:09:03.848  INFO 12600 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:09:04.799  INFO 12600 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:09:04.891  INFO 12600 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:09:05.560  INFO 12600 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:09:05.585  INFO 12600 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:09:05.586  INFO 12600 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:09:05.756  INFO 12600 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:09:05.756  INFO 12600 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1832 ms
+2023-03-05 21:09:06.354  INFO 12600 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:09:06.743  INFO 12600 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:09:08.077  INFO 12600 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:09:08.714  WARN 12600 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:09:09.175  INFO 12600 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:09:09.188  INFO 12600 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 5.969 seconds (JVM running for 7.107)
+2023-03-05 21:09:15.754  INFO 12600 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:09:15.756  INFO 12600 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:09:15.757  INFO 12600 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:11:35.219  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:11:35.256  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:11:35.258  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:11:35.304  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:11:35.309  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:11:35.372  INFO 12600 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:11:54.374  INFO 3512 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 3512 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:11:54.386  INFO 3512 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:11:55.229  INFO 3512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:11:55.351  INFO 3512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 108 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:11:56.010  INFO 3512 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:11:56.036  INFO 3512 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:11:56.036  INFO 3512 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:11:56.199  INFO 3512 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:11:56.199  INFO 3512 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1734 ms
+2023-03-05 21:11:56.795  INFO 3512 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:11:57.229  INFO 3512 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:11:58.597  INFO 3512 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:11:59.212  WARN 3512 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:11:59.694  INFO 3512 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:11:59.705  INFO 3512 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 5.963 seconds (JVM running for 7.59)
+2023-03-05 21:12:06.847  INFO 3512 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:12:06.847  INFO 3512 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:12:06.848  INFO 3512 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:13:38.567  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:13:38.624  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:13:38.627  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:13:38.712  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:13:38.714  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:13:38.821  INFO 3512 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:13:51.900  INFO 2544 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 2544 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:13:51.926  INFO 2544 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:13:55.147  INFO 2544 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:13:55.389  INFO 2544 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 202 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:13:57.196  INFO 2544 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:13:57.264  INFO 2544 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:13:57.266  INFO 2544 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:13:57.900  INFO 2544 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:13:57.901  INFO 2544 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5622 ms
+2023-03-05 21:13:59.132  INFO 2544 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:13:59.659  INFO 2544 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:14:01.484  INFO 2544 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:14:02.168  WARN 2544 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:14:02.898  INFO 2544 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:14:02.912  INFO 2544 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 13.24 seconds (JVM running for 18.512)
+2023-03-05 21:14:04.568  INFO 2544 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:14:04.568  INFO 2544 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:14:04.570  INFO 2544 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:15:20.511  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:15:20.527  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:15:20.529  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:15:20.540  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:15:20.541  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:15:20.555  INFO 2544 --- [RMI TCP Connection(5)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:15:31.966  INFO 1776 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 1776 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:15:31.989  INFO 1776 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:15:34.422  INFO 1776 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:15:34.855  INFO 1776 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 311 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:15:37.138  INFO 1776 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:15:37.225  INFO 1776 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:15:37.226  INFO 1776 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:15:37.728  INFO 1776 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:15:37.729  INFO 1776 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5590 ms
+2023-03-05 21:15:43.560  INFO 1776 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:15:44.465  INFO 1776 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:15:46.122  INFO 1776 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:15:46.773  WARN 1776 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:15:47.214  INFO 1776 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:15:47.227  INFO 1776 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 18.035 seconds (JVM running for 23.563)
+2023-03-05 21:15:51.257  INFO 1776 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:15:51.257  INFO 1776 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:15:51.259  INFO 1776 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:18:27.365  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:18:27.381  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:18:27.383  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:18:27.395  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:18:27.396  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:18:27.410  INFO 1776 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:18:37.492  INFO 1516 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 1516 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:18:37.524  INFO 1516 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:18:40.705  INFO 1516 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:18:41.156  INFO 1516 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 434 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:18:43.514  INFO 1516 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:18:43.641  INFO 1516 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:18:43.643  INFO 1516 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:18:43.991  INFO 1516 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:18:43.992  INFO 1516 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6324 ms
+2023-03-05 21:18:51.311  INFO 1516 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:18:52.300  INFO 1516 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:18:54.564  INFO 1516 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:18:55.834  WARN 1516 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:18:56.724  INFO 1516 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:18:56.745  INFO 1516 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 21.637 seconds (JVM running for 26.65)
+2023-03-05 21:18:59.156  INFO 1516 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:18:59.156  INFO 1516 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:18:59.158  INFO 1516 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:19:13.831  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:19:13.852  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:19:13.854  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:19:13.869  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:19:13.871  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:19:13.886  INFO 1516 --- [RMI TCP Connection(2)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:19:26.450  INFO 952 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 952 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:19:26.535  INFO 952 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:19:28.553  INFO 952 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:19:28.808  INFO 952 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 238 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:19:30.963  INFO 952 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:19:31.032  INFO 952 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:19:31.033  INFO 952 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:19:31.338  INFO 952 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:19:31.338  INFO 952 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4553 ms
+2023-03-05 21:19:36.131  INFO 952 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:19:38.240  INFO 952 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:19:39.959  INFO 952 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:19:40.543  WARN 952 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:19:40.994  INFO 952 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:19:41.013  INFO 952 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 16.873 seconds (JVM running for 22.3)
+2023-03-05 21:21:00.765  INFO 952 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:21:00.766  INFO 952 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:21:00.767  INFO 952 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:21:38.606  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:21:38.621  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:21:38.623  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:21:38.635  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:21:38.636  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:21:38.651  INFO 952 --- [RMI TCP Connection(6)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:21:48.551  INFO 5872 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 5872 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:21:48.613  INFO 5872 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:21:50.846  INFO 5872 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:21:51.097  INFO 5872 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 221 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:21:53.567  INFO 5872 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:21:53.722  INFO 5872 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:21:53.722  INFO 5872 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:21:54.085  INFO 5872 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:21:54.104  INFO 5872 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5265 ms
+2023-03-05 21:22:02.084  INFO 5872 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:22:02.841  INFO 5872 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:22:04.722  INFO 5872 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:22:05.357  WARN 5872 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:22:05.830  INFO 5872 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:22:05.842  INFO 5872 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 19.094 seconds (JVM running for 24.383)
+2023-03-05 21:22:12.038  INFO 5872 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:22:12.040  INFO 5872 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:22:12.042  INFO 5872 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2023-03-05 21:22:30.525  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-05 21:22:30.540  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-05 21:22:30.542  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-05 21:22:30.554  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:22:30.556  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-05 21:22:30.570  INFO 5872 --- [RMI TCP Connection(2)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-05 21:22:41.758  INFO 12092 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 12092 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-05 21:22:41.792  INFO 12092 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-05 21:22:43.909  INFO 12092 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-05 21:22:44.261  INFO 12092 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 334 ms. Found 8 JPA repository interfaces.
+2023-03-05 21:22:46.400  INFO 12092 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-05 21:22:46.541  INFO 12092 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-05 21:22:46.543  INFO 12092 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-05 21:22:46.950  INFO 12092 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-05 21:22:46.951  INFO 12092 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4832 ms
+2023-03-05 21:22:54.815  INFO 12092 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-05 21:22:56.087  INFO 12092 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-05 21:23:00.007  INFO 12092 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-05 21:23:00.683  WARN 12092 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-05 21:23:01.232  INFO 12092 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-05 21:23:01.244  INFO 12092 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 22.217 seconds (JVM running for 27.829)
+2023-03-05 21:23:27.236  INFO 12092 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-05 21:23:27.236  INFO 12092 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-05 21:23:27.239  INFO 12092 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
