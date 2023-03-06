@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.AdminEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
+import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
 @RestController
 @RequestMapping(path = "/api/project/admin")
@@ -27,6 +28,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminRepository adminRepository;
+	
+	@Autowired
+	UserCustomValidator userValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAdmin() {
@@ -104,7 +108,7 @@ public class AdminController {
 		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
-			}
+		}
 		
 		AdminEntity newAdmin = new AdminEntity();
 		
@@ -135,8 +139,14 @@ public class AdminController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateAdmin/{admin_id}")
-	public ResponseEntity<?> updateAdmin(@RequestBody UserDTO updatedUser, @PathVariable Integer admin_id,
-			@RequestParam String accessPass) {
+	public ResponseEntity<?> updateAdmin(@Valid @RequestBody UserDTO updatedUser, @PathVariable Integer admin_id,
+			@RequestParam String accessPass, BindingResult result) {
+		
+		if (result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		} else {
+			userValidator.validate(updatedUser, result);
+		}
 
 		AdminEntity admin = adminRepository.findById(admin_id).orElse(null);
 
@@ -152,10 +162,6 @@ public class AdminController {
 		admin.setLastName(updatedUser.getLastName());
 		admin.setUsername(updatedUser.getUsername());
 		admin.setEmail(updatedUser.getEmail());
-
-		if (updatedUser.getPassword().equals(updatedUser.getChanged_password())) {
-			admin.setPassword(updatedUser.getPassword());
-		}
 
 		adminRepository.save(admin);
 		return new ResponseEntity<AdminEntity>(admin, HttpStatus.OK);

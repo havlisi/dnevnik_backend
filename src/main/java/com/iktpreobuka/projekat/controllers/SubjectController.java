@@ -29,6 +29,7 @@ public class SubjectController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllSubjects() {
+		
 		List<SubjectEntity> subjects = (List<SubjectEntity>) subjectRepository.findAll();
 
 		if (subjects.isEmpty()) {
@@ -40,7 +41,9 @@ public class SubjectController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
 	public ResponseEntity<?> createSubject(@Valid @RequestBody SubjectDTO newSubject, BindingResult result) {
+		
 		SubjectEntity existingSubject = subjectRepository.findBySubjectName(newSubject.getSubjectName());
+		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
@@ -63,9 +66,14 @@ public class SubjectController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateSubject/{id}")
-	public ResponseEntity<?> updateSubject(@RequestBody SubjectDTO updatedSubject, @PathVariable Integer id) {
+	public ResponseEntity<?> updateSubject(@Valid @RequestBody SubjectDTO updatedSubject, @PathVariable Integer id, BindingResult result) {
+		
 		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
 
+		if(result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		}
+		
 		if (subject == null) {
 			return new ResponseEntity<>("No subject with " + id + " ID found", HttpStatus.NOT_FOUND);
 		}
@@ -79,6 +87,7 @@ public class SubjectController {
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-id/{id}")
 	public ResponseEntity<?> deleteSubject(@PathVariable Integer id) {
+		
 		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
 
 		if (subject == null) {
@@ -91,6 +100,7 @@ public class SubjectController {
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-name/{name}")
 	public ResponseEntity<?> deleteSubjectByName(@PathVariable String name) {
+		
 		SubjectEntity subject = subjectRepository.findBySubjectName(name);
 
 		if (subject == null) {

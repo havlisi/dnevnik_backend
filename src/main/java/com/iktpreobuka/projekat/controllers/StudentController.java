@@ -26,6 +26,7 @@ import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
+import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
 @RestController
 @RequestMapping(path = "/api/project/student")
@@ -39,6 +40,9 @@ public class StudentController {
 
 	@Autowired
 	private TeacherSubjectRepository teacherSubjectRepository;
+	
+	@Autowired
+	UserCustomValidator userValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllStudents() {
@@ -119,6 +123,7 @@ public class StudentController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/newStudentUser")
 	public ResponseEntity<?> createStudent(@Valid @RequestBody UserDTO newUser, BindingResult result) {
+		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
@@ -174,6 +179,7 @@ public class StudentController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/studentsTeachingSubj/teachsubj/{teachSubj_id}/student/{students_id}")
 	public ResponseEntity<?> setStudentsTeachingSubj(@PathVariable Integer teachSubj_id,
 			@PathVariable Integer students_id) {
+		
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
 		TeacherSubject teacherSubject = teacherSubjectRepository.findById(teachSubj_id).orElse(null);
 
@@ -195,8 +201,14 @@ public class StudentController {
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateStudent/{id}")
 	public ResponseEntity<?> updateStudent(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
-			@RequestParam String accessPass) {
+			@RequestParam String accessPass, BindingResult result) {
 
+		if (result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		} else {
+			userValidator.validate(updatedUser, result);
+		}
+		
 		StudentEntity student = studentRepository.findById(id).orElse(null);
 
 		if (student == null) {
@@ -211,10 +223,6 @@ public class StudentController {
 		student.setLastName(updatedUser.getLastName());
 		student.setUsername(updatedUser.getUsername());
 		student.setEmail(updatedUser.getEmail());
-
-		if (updatedUser.getPassword().equals(updatedUser.getChanged_password())) {
-			student.setPassword(updatedUser.getPassword());
-		}
 
 		studentRepository.save(student);
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);

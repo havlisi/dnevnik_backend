@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
+import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
 @RestController
 @RequestMapping(path = "/api/project/teacher")
@@ -28,6 +29,9 @@ public class TeacherController {
 
 	@Autowired
 	private TeacherRepository teacherRepository;
+	
+	@Autowired
+	UserCustomValidator userValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
@@ -102,6 +106,7 @@ public class TeacherController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
 	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser, BindingResult result) {
+		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
@@ -138,9 +143,15 @@ public class TeacherController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacher/{id}")
-	public ResponseEntity<?> updateTeacher(@RequestBody UserDTO updatedUser, @PathVariable Integer id,
-			@RequestParam String accessPass) {
+	public ResponseEntity<?> updateTeacher(@Valid @RequestBody UserDTO updatedUser, @PathVariable Integer id,
+			@RequestParam String accessPass, BindingResult result) {
 
+		if (result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		} else {
+			userValidator.validate(updatedUser, result);
+		}
+		
 		TeacherEntity teacher = teacherRepository.findById(id).orElse(null);
 
 		if (teacher == null) {
@@ -155,10 +166,6 @@ public class TeacherController {
 		teacher.setLastName(updatedUser.getLastName());
 		teacher.setUsername(updatedUser.getUsername());
 		teacher.setEmail(updatedUser.getEmail());
-
-		if (updatedUser.getPassword().equals(updatedUser.getChanged_password())) {
-			teacher.setPassword(updatedUser.getPassword());
-		}
 
 		teacherRepository.save(teacher);
 		return new ResponseEntity<TeacherEntity>(teacher, HttpStatus.OK);

@@ -96,6 +96,7 @@ public class GradeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
 	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue, BindingResult result) {
+		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
@@ -150,12 +151,16 @@ public class GradeController {
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateGrade/student/{student_id}/teachsubj/{teachsubj_id}/grade/{grade_id}")
-	public ResponseEntity<?> updateGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
+	public ResponseEntity<?> updateGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id, BindingResult result,
 			@PathVariable Integer grade_id, @RequestParam boolean firstSemester, @RequestParam Integer gradeValue) {
 		StudentEntity student = studentRepository.findById(student_id).get();
 		TeacherSubject teachingSubject = teacherSubjectRepository.findById(teachsubj_id).get();
 		GradeEntity grade = gradeRepository.findById(grade_id).get();
 
+		if(result.hasErrors()) {
+			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		}
+		
 		if (grade == null) {
 			return new ResponseEntity<>("There is no grade with this id " + grade_id, HttpStatus.NOT_FOUND);
 		}
