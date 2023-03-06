@@ -34,7 +34,7 @@ public class UserDTO {
 	@NotNull(message = "Password must be provided.")
 	@Size(min = 5, max = 15, message = "Password must be between "
 			+ "{min} and {max} characters long.")
-	private String changed_password;
+	private String confirmed_password;
 	
 	@Column(nullable = false)
 	private String role;
@@ -47,7 +47,7 @@ public class UserDTO {
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
 			@NotNull(message = "Please provide email address.") @Email(message = "Email is not valid.") String email,
 			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String password,
-			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String changed_password,
+			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String confirmed_password,
 			String role) {
 		super();
 		this.firstName = firstName;
@@ -55,7 +55,7 @@ public class UserDTO {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.changed_password = changed_password;
+		this.confirmed_password = confirmed_password;
 		this.role = role;
 	}
 
@@ -99,12 +99,12 @@ public class UserDTO {
 		this.password = password;
 	}
 
-	public String getChanged_password() {
-		return changed_password;
+	public String getConfirmed_password() {
+		return confirmed_password;
 	}
 
-	public void setChanged_password(String changed_password) {
-		this.changed_password = changed_password;
+	public void setConfirmed_password(String confirmed_password) {
+		this.confirmed_password = confirmed_password;
 	}
 
 	public String getRole() {
