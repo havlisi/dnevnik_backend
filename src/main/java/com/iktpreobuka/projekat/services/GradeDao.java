@@ -1,11 +1,10 @@
 package com.iktpreobuka.projekat.services;
 
-import java.util.List;
-import com.iktpreobuka.projekat.entities.GradeEntity;
+import org.springframework.http.ResponseEntity;
 
 public interface GradeDao {
 
-	public List<GradeEntity> findGradesBySemester(Integer userId, Integer tsId, Integer sbId, boolean firstsemester);
+	public ResponseEntity<?> findGradesBySemester(Integer userId, Integer tsId, Integer sbId, boolean firstsemester);
 
-	public List<GradeEntity> findFinalGrades(Integer userId, Integer tsId, Integer sbId);
+	public ResponseEntity<?> findFinalGrades(Integer userId, Integer tsId, Integer sbId);
 }

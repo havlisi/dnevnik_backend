@@ -2,6 +2,7 @@ package com.iktpreobuka.projekat.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.iktpreobuka.projekat.security.Views;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -17,10 +23,15 @@ public class SubjectEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(Views.Public.class)
+	@JsonProperty("ID")
 	private Integer id;
 	
+	@NotNull(message = "Subject name must be provided.")
+	@JsonView(Views.Public.class)
 	private String subjectName;
 	
+	@JsonView(Views.Admin.class) //TODO ne bi trebalo biti public?
 	private Integer fondCasova;
 	
 	@OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -28,7 +39,8 @@ public class SubjectEntity {
 
 	public SubjectEntity() {}
 
-	public SubjectEntity(Integer id, String subjectName, Integer fondCasova, List<TeacherSubject> teacherSubject) {
+	public SubjectEntity(Integer id, @NotNull(message = "Subject name must be provided.") String subjectName, 
+			Integer fondCasova, List<TeacherSubject> teacherSubject) {
 		super();
 		this.id = id;
 		this.subjectName = subjectName;
