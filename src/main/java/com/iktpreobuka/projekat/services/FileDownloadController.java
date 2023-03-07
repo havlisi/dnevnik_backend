@@ -14,14 +14,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.iktpreobuka.projekat.security.Views;
+
 @Controller
-//Zadatak treba da omogući da administrator i samo administrator može da
-//vidi/preuzme logove.
 @RequestMapping(path = "/api/project")
 public class FileDownloadController {
 
-	private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+	@JsonView(Views.Admin.class) //TODO samo administrator može da vidi/preuzme logove
+	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
+	//SECURED ADMIN
+	//Zadatak treba da omogući da administrator i samo administrator može da
+	//vidi/preuzme logove.
 	@RequestMapping(method = RequestMethod.GET, value = "/download")
     public ResponseEntity<ByteArrayResource> downloadFile() throws IOException {
 
