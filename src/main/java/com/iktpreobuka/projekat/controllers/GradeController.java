@@ -1,25 +1,24 @@
 package com.iktpreobuka.projekat.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 //import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.iktpreobuka.projekat.entities.GradeEntity;
+import com.iktpreobuka.projekat.entities.Helpers;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
+import com.iktpreobuka.projekat.entities.dto.GradeSubjectDTO;
 import com.iktpreobuka.projekat.repositories.GradeRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
@@ -28,6 +27,8 @@ import com.iktpreobuka.projekat.services.EmailServiceImpl;
 import com.iktpreobuka.projekat.services.GradeDaoImpl;
 
 @RestController
+
+//Ako je korisnik administrator može ima potpun pristup svim podacima u sistemu.
 @RequestMapping(path = "/api/project/grade")
 public class GradeController {
 
@@ -61,6 +62,7 @@ public class GradeController {
 		}
 	}
 
+	//ucenik moze da vidi secured ucenik
 	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentName")
 	public ResponseEntity<?> getGradesByStudentName(@RequestParam String studentFName,
 			@RequestParam String studentLName) {
@@ -73,32 +75,47 @@ public class GradeController {
 				return new ResponseEntity<>("Grades for student " + studentFName + " " + studentLName + " not found",
 						HttpStatus.NOT_FOUND);
 			} else {
-				return new ResponseEntity<>(grades, HttpStatus.OK);
+				List<GradeSubjectDTO> gradesWithSubjects = new ArrayList<GradeSubjectDTO>();
+				for (GradeEntity grade : grades) {
+					GradeSubjectDTO gradeSubject = new GradeSubjectDTO(grade.getGrade(), grade.isFirstSemester(), 
+							grade.getTeacherSubject().getSubject().getSubjectName());
+					gradesWithSubjects.add(gradeSubject);
+				}
+				
+				return new ResponseEntity<>(gradesWithSubjects, HttpStatus.OK);
 			}
 		}
 		return new ResponseEntity<>("Student " + studentFName + " " + studentLName + " not found",
 				HttpStatus.NOT_FOUND);
 	}
 	
+	
+	//Ako je korisnik roditelj, može da vidi sve ocene svih učenika vezanih za sebe.
+	
+	//finalna ocena svega ikad
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/semester")
-	public List<GradeEntity> findGradesBySemester(@RequestParam Integer userId, @RequestParam Integer tsId,
+	public List<GradeEntity> findSubjectGradeBySemester(@RequestParam Integer userId, @RequestParam Integer tsId,
 			@RequestParam Integer sbId, @RequestParam boolean firstsemester) {
 		return gradeDaoImpl.findGradesBySemester(userId, tsId, sbId, firstsemester);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/finalGrade")
-	public List<GradeEntity> findFinalGrade(@RequestParam Integer userId, @RequestParam Integer tsId,
+	public List<GradeEntity> findGradeFinalGrade(@RequestParam Integer userId, @RequestParam Integer tsId,
 			@RequestParam Integer sbId) {
 		return gradeDaoImpl.findFinalGrades(userId, tsId, sbId);
 	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
+//	Ako je korisnik nastavnik, može da vidi sve ocene svih svojih predmeta za učenike
+//	i predmete kojima predaje i da ih menja, briše, ili dodaje nove uz mogućnost
+//	pretrage.
 	@RequestMapping(method = RequestMethod.POST, value = "/newGrade/student/{student_id}/teachsubj/{teachsubj_id}")
 	public ResponseEntity<?> createGrade(@PathVariable Integer student_id, @PathVariable Integer teachsubj_id,
 			@RequestParam boolean firstSemester, @RequestParam Integer gradeValue, BindingResult result) {
 		
 		if(result.hasErrors()) {
-			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		StudentEntity student = studentRepository.findById(student_id).orElse(null);
@@ -142,12 +159,6 @@ public class GradeController {
 		
 		return new ResponseEntity<>(student, HttpStatus.CREATED);
 	}
-	
-	private String createErrorMessage(BindingResult result) {
-		return result.getAllErrors().stream().map(ObjectError::getDefaultMessage)
-		.collect(Collectors.joining(" "));
-
-	}
 
 	// @Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateGrade/student/{student_id}/teachsubj/{teachsubj_id}/grade/{grade_id}")
@@ -158,7 +169,7 @@ public class GradeController {
 		GradeEntity grade = gradeRepository.findById(grade_id).get();
 
 		if(result.hasErrors()) {
-			return new ResponseEntity<>(createErrorMessage(result), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		if (grade == null) {

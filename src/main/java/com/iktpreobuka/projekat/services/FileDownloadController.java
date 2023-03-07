@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+//Zadatak treba da omogući da administrator i samo administrator može da
+//vidi/preuzme logove.
 @RequestMapping(path = "/api/project")
 public class FileDownloadController {
 
