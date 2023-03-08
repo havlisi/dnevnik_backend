@@ -24,7 +24,7 @@ public class UserCustomValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		UserDTO user = (UserDTO) target;
 		if(!user.getPassword().equals(user.getConfirmed_password())) {
-	        logger.error("Users password doesn't matche the confirming password");
+	        logger.error("Users password doesn't match the confirming password");
 			errors.reject("400", "Passwords must be the same");
 		}
 		

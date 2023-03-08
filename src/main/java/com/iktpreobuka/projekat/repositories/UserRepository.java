@@ -5,4 +5,6 @@ import com.iktpreobuka.projekat.entities.UserEntity;
 
 public interface UserRepository extends CrudRepository<UserEntity, Integer>{
 
+	UserEntity findByEmail(String email);
+
 }

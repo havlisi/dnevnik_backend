@@ -2,7 +2,6 @@ package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.entities.Helpers;
+import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
 import com.iktpreobuka.projekat.entities.dto.SubjectDTO;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
@@ -57,7 +55,7 @@ public class SubjectController {
 
 		if(result.hasErrors()) {
 	        logger.info("Validating input parameters for subject");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		if (existingSubject != null) {
@@ -82,7 +80,7 @@ public class SubjectController {
 
 		if(result.hasErrors()) {
 	        logger.info("Validating input parameters for subject");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		if (subject == null) {
