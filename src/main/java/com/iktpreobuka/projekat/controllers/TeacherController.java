@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.entities.Helpers;
+import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
@@ -126,8 +126,8 @@ public class TeacherController {
 	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser, BindingResult result) {
 		
 		if(result.hasErrors()) {
-	        logger.info("Validating users input parameters");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		TeacherEntity newTeacher = new TeacherEntity();
@@ -168,8 +168,8 @@ public class TeacherController {
 			@RequestParam String accessPass, BindingResult result) {
 
 		if (result.hasErrors()) {
-	        logger.info("Validating users input parameters");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(updatedUser, result);

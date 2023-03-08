@@ -3,7 +3,6 @@ package com.iktpreobuka.projekat.controllers;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.entities.Helpers;
+import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
@@ -151,8 +149,8 @@ public class ParentController {
 	public ResponseEntity<?> createParent(@Valid @RequestBody UserDTO newUser, BindingResult result) {
 
 		if (result.hasErrors()) {
-	        logger.info("Validating users input parameters");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 
 		ParentEntity newParent = new ParentEntity();
@@ -193,8 +191,8 @@ public class ParentController {
 			@RequestParam String accessPass, BindingResult result) {
 
 		if (result.hasErrors()) {
-	        logger.info("Validating users input parameters");
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(updatedUser, result);

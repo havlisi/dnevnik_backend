@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.entities.Helpers;
+import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
@@ -59,8 +59,10 @@ public class TeacherSubjectController {
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject/subj/{subj_id}/teach/{teacher_id}")
 	public ResponseEntity<?> createTeacherSubject(@Valid @RequestBody TeacherSubjectDTO newTeacherSubject,
 			@PathVariable Integer teacher_id, @PathVariable Integer subj_id, BindingResult result) {
+		
 		if(result.hasErrors()) {
-			return new ResponseEntity<>(Helpers.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
 		}
 		
 		TeacherEntity teacher = teacherRepository.findById(teacher_id).orElse(null);
@@ -92,6 +94,7 @@ public class TeacherSubjectController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacherSubject/{id}")
 	public ResponseEntity<?> updateTeacherSubject(@RequestBody TeacherSubjectDTO updatedTeacherSubject,
 			@PathVariable Integer id) {
+		
 		TeacherSubject teacherSubjects = teacherSubjectRepository.findById(id).orElse(null);
 
 		if (teacherSubjects == null) {

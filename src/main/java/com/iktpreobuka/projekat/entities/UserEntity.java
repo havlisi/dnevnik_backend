@@ -52,8 +52,8 @@ public class UserEntity {
 	private String email;
 	
 	@NotNull(message = "Password must be provided.")
-	@Size(min = 5, max = 15, message = "Password must be between "
-			+ "{min} and {max} characters long.")
+	@Size(min = 5, message = "Password must be minimum "
+			+ "{min} characters long.")
 	@JsonIgnore
 	private String password;
 	
@@ -68,7 +68,7 @@ public class UserEntity {
 			@NotNull(message = "Last name must be provided.") @Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long.") String lastName,
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
 			@NotNull(message = "Please provide email address.") @Email(message = "Email is not valid.") String email,
-			@NotNull(message = "Password must be provided.") @Size(min = 5, max = 15, message = "Password must be between {min} and {max} characters long.") String password,
+			@NotNull(message = "Password must be provided.") @Size(min = 5, message = "Password must be minimum {min} characters long.") String password,
 			String role) {
 		super();
 		this.id = id;
