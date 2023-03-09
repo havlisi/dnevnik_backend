@@ -36,7 +36,7 @@ public class AdminDaoImpl implements AdminDao {
 
 	
 	public ResponseEntity<?> createAdmin(UserDTO newUser, BindingResult result) {
-
+		
 		if (result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
 			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);

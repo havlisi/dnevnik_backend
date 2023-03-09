@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
-import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.SubjectDTO;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
-import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 import com.iktpreobuka.projekat.security.Views;
-import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
+import com.iktpreobuka.projekat.services.SubjectDaoImpl;
 import com.iktpreobuka.projekat.utils.RESTError;
 
 @RestController
@@ -32,7 +30,7 @@ public class SubjectController {
 	private SubjectRepository subjectRepository;
 	
 	@Autowired
-	private TeacherSubjectRepository teacherSubjectRepository;
+	private SubjectDaoImpl subjectDaoImpl;
 	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
@@ -55,96 +53,25 @@ public class SubjectController {
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
 	public ResponseEntity<?> createSubject(@Valid @RequestBody SubjectDTO newSubject, BindingResult result) {
-
-		if (result.hasErrors()) {
-	        logger.info("Validating input parameters for subject");
-			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
-		}
-		
-		SubjectEntity existingSubject = subjectRepository.findBySubjectName(newSubject.getSubjectName());
-        logger.info("Checking whether theres an existing subject in the database");
-
-		if (existingSubject != null) {
-	        logger.error("Subject with the same name already exists");
-			return new ResponseEntity<RESTError>(new RESTError(1, "A subject with the same name already exists"), HttpStatus.CONFLICT);
-		}
-		
-		SubjectEntity subject = new SubjectEntity();
-		
-		subject.setSubjectName(newSubject.getSubjectName());
-		subject.setFondCasova(newSubject.getFondCasova());
-
-		subjectRepository.save(subject);
-        logger.info("Saving subject to the database");
-        
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.CREATED);
+		return subjectDaoImpl.createSubject(newSubject, result);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateSubject/{id}")
 	public ResponseEntity<?> updateSubject(@Valid @RequestBody SubjectDTO updatedSubject, BindingResult result, @PathVariable Integer id) {
-
-		if (result.hasErrors()) {
-	        logger.info("Validating input parameters for subject");
-			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
-		}
-		
-		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
-
-		if (subject == null) {
-	        logger.error("No subject with " + id + " ID found");
-			return new ResponseEntity<RESTError>(new RESTError(1, "No subject with " + id + " ID found"), HttpStatus.NOT_FOUND);
-		}
-
-		subject.setSubjectName(updatedSubject.getSubjectName());
-		subject.setFondCasova(updatedSubject.getFondCasova());
-
-		subjectRepository.save(subject);
-        logger.info("Saving subject to the database");
-
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
+		return subjectDaoImpl.updateSubject(updatedSubject, result, id);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-id/{id}")
 	public ResponseEntity<?> deleteSubject(@PathVariable Integer id) {
-		
-		SubjectEntity subject = subjectRepository.findById(id).orElse(null);
-
-		if (subject == null) {
-	        logger.error("No subject with " + id + " ID found");
-			return new ResponseEntity<RESTError>(new RESTError(1, "No subject with " + id + " ID found"), HttpStatus.NOT_FOUND);
-		}
-
-		for (TeacherSubject teachingSubject : subject.getTeacherSubjects()) {
-			teacherSubjectRepository.delete(teachingSubject);
-		}
-		
-		subjectRepository.delete(subject);
-        logger.info("Deleting subject from the database");
-
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
+		return subjectDaoImpl.deleteSubject(id);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-name/{name}")
 	public ResponseEntity<?> deleteSubjectByName(@PathVariable String name) {
-		
-		SubjectEntity subject = subjectRepository.findBySubjectName(name);
-
-		if (subject == null) {
-	        logger.error("No subject with name: " + name + " found");
-			return new ResponseEntity<RESTError>(new RESTError(1, "No subject called " + name + " found"), HttpStatus.NOT_FOUND);
-		}
-		
-		for (TeacherSubject teachingSubject : subject.getTeacherSubjects()) {
-			teacherSubjectRepository.delete(teachingSubject);
-		}
-		
-		subjectRepository.delete(subject);
-        logger.info("Deleting subject from the database");
-
-		return new ResponseEntity<SubjectEntity>(subject, HttpStatus.OK);
+		return subjectDaoImpl.deleteSubjectByName(name);
 	}
 
 }
