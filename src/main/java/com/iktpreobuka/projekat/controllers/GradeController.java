@@ -42,8 +42,6 @@ import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
 
 @RestController
-
-//Ako je korisnik administrator može ima potpun pristup svim podacima u sistemu.
 @RequestMapping(path = "/api/project/grade")
 public class GradeController {
 
@@ -87,26 +85,26 @@ public class GradeController {
 	}
 
 	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
-	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentName")
-	public ResponseEntity<?> getGradesByStudentName(@RequestParam String studentFName, @RequestParam String studentLName,
+	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentUsername")
+	public ResponseEntity<?> getGradesByStudentUsername(@RequestParam String username,
 			Authentication authentication) {
 		String signedInUserEmail = authentication.getName();
 		UserEntity currentUser = userRepository.findByEmail(signedInUserEmail);
 		
-		Optional<StudentEntity> student = studentRepository.findByFirstNameAndLastName(studentFName, studentLName);
+		Optional<StudentEntity> student = studentRepository.findByUsername(username);
 		
 		if (!student.isPresent()) {
-			logger.error("Student " + studentFName + " " + studentLName + " not found");
-			RESTError error = new RESTError(1, "Student " + studentFName + " " + studentLName + " not found");
+			logger.error("Student " + username + " not found");
+			RESTError error = new RESTError(1, "Student " + username + " not found");
 			return new ResponseEntity<RESTError>(error, HttpStatus.NOT_FOUND);
 		}
 		
 		List<GradeEntity> grades = student.get().getGrades();
 
 		if (grades.isEmpty()) {
-			logger.error("Grades for student " + studentFName + " " + studentLName + " not found");
+			logger.error("Grades for student " + username + " not found");
 			return new ResponseEntity<RESTError>(new RESTError(2, "Grades for student " 
-					+ studentFName + " " + studentLName + " not found"), HttpStatus.NOT_FOUND);
+					+ username + " not found"), HttpStatus.NOT_FOUND);
 		}
 		
 		List<GradeSubjectDTO> gradesWithSubjects = new ArrayList<GradeSubjectDTO>();
@@ -130,8 +128,8 @@ public class GradeController {
 				logger.info("Teacher is looking at students grades.");
 		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
 		    } else {
-		        logger.error("Teacher is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
-		        RESTError error = new RESTError(3, "Teacher is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
+		        logger.error("Teacher is unauthorized to looked at " + username + " grades.");
+		        RESTError error = new RESTError(3, "Teacher is unauthorized to looked at " + username + " grades.");
 		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
 		    }
 		}
@@ -150,8 +148,8 @@ public class GradeController {
 				logger.info("Parent is looking at childs grades.");
 		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
 		    } else {
-				logger.error("Parent is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
-				RESTError error = new RESTError(4, "Parent is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
+				logger.error("Parent is unauthorized to looked at " + username + " grades.");
+				RESTError error = new RESTError(4, "Parent is unauthorized to looked at " + username + " grades.");
 		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
 			}
 		}
@@ -163,8 +161,8 @@ public class GradeController {
 				logger.info("Student is looking at its own grades.");
 		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
 			} else {
-				logger.error("Student is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
-				RESTError error = new RESTError(5, "Student is unauthorized to looked at " + studentFName + " " + studentLName + " grades.");
+				logger.error("Student is unauthorized to looked at " + username + " grades.");
+				RESTError error = new RESTError(5, "Student is unauthorized to looked at " + username + " grades.");
 		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
 			}
 		}
@@ -176,17 +174,18 @@ public class GradeController {
 		return new ResponseEntity<RESTError>(new RESTError(6, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
 			
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
 	@RequestMapping(method = RequestMethod.GET, value = "/semester")
 	public ResponseEntity<?> findSubjectGradeBySemester(@RequestParam Integer userId, @RequestParam Integer tsId,
-			@RequestParam Integer sbId, @RequestParam boolean firstsemester) {
-		return gradeDaoImpl.findGradesBySemester(userId, tsId, sbId, firstsemester);
+			@RequestParam Integer sbId, @RequestParam boolean firstsemester, Authentication authentication) {
+		return gradeDaoImpl.findGradesBySemester(userId, tsId, sbId, firstsemester, authentication);
 	}
 	
+	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
 	@RequestMapping(method = RequestMethod.GET, value = "/finalGrade")
 	public ResponseEntity<?> findGradeFinalGrade(@RequestParam Integer userId, @RequestParam Integer tsId,
-			@RequestParam Integer sbId) {
-		return gradeDaoImpl.findFinalGrades(userId, tsId, sbId);
+			@RequestParam Integer sbId, Authentication authentication) {
+		return gradeDaoImpl.findFinalGrades(userId, tsId, sbId, authentication);
 	}
 
 	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
@@ -328,7 +327,6 @@ public class GradeController {
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_TEACHER" })
-	// da li predaje nastavnik
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteGrade/grade/{grade_id}/teachSubj/{teachsubj_id}")
 	public ResponseEntity<?> deleteGrade(@PathVariable Integer grade_id, @PathVariable Integer teachsubj_id, 
 			@RequestParam Integer teacher_id, Authentication authentication) {
@@ -381,9 +379,7 @@ public class GradeController {
 			logger.error("Unauthorized user tried to give grade.");
 			return new ResponseEntity<RESTError>(new RESTError(6, "User is not authorized to delete grade."), HttpStatus.UNAUTHORIZED);
 		}
-		
-		// servis pa udji u ovo deleteGrade(); i izvrsi pre ovo dole
-		
+				
 		gradeRepository.delete(grade);
         logger.info("Deleting grade from the database");
 

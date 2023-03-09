@@ -31,11 +31,11 @@ public class GradeEntity {
 	@NotNull(message = "Grade must be provided")
 	@Min(value = 1, message = "Grade must be between 1 and 5")
 	@Max(value = 5, message = "Grade must be between 1 and 5")
-	@JsonView(Views.Private.class)
+	@JsonView(Views.Admin.class)
 	private Integer grade;
 	
 	@NotNull(message = "The 'firstSemester' field must be set to true or false")
-	@JsonView(Views.Private.class)
+	@JsonView(Views.Admin.class)
 	private boolean firstSemester;
 	
 	@JsonIgnore

@@ -10,12 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.GradeEntity;
+import com.iktpreobuka.projekat.entities.ParentEntity;
+import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
+import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
@@ -44,7 +47,11 @@ public class GradeDaoImpl implements GradeDao {
 
 	@Override
 	public ResponseEntity<?> findGradesBySemester(Integer userId, Integer tsId, 
-			Integer sbId, boolean firstsemester) {
+			Integer sbId, boolean firstsemester, Authentication authentication) {
+		
+		String signedInUserEmail = authentication.getName();
+		UserEntity currentUser = userRepository.findByEmail(signedInUserEmail);
+		
 		Optional<UserEntity> user = userRepository.findById(userId);
 		Optional<TeacherSubject> teacherSubject = teacherSubjectRepository.findById(tsId);
 		Optional<SubjectEntity> subject = subjectRepository.findById(sbId);
@@ -108,11 +115,74 @@ public class GradeDaoImpl implements GradeDao {
 		
 		List<GradeEntity> result = query.getResultList();
 		
-		return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		logger.info("Checking who is logged in user.");
+
+		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+			logger.info("Logged in user is a teacher.");
+		    TeacherEntity teacher = (TeacherEntity) currentUser;
+		    boolean isTeachingStudent = false;
+		    for (TeacherSubject teachingSubject : teacher.getTeacherSubject()) {
+		        if (teachingSubject.getStudents().contains(user.get())) {
+					logger.info("Correct! Student is taking this teaching subject");
+		            isTeachingStudent = true;
+		        }
+		    }
+		    if (isTeachingStudent) {
+				logger.info("Teacher is looking at students grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		    } else {
+		        logger.error("Teacher is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        RESTError error = new RESTError(4, "Teacher is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+		    }
+		}
+		
+		if (currentUser.getRole().equals("ROLE_PARENT")) {
+			logger.info("Logged in user is a students parent.");
+			ParentEntity parent = (ParentEntity) currentUser;
+		    boolean isParentOfStudent = false;
+		    for (StudentEntity child : parent.getStudent()) {
+		    	if (child.getId().equals(user.get().getId())) {
+					logger.info("Correct! This is a parent to this student");
+		    		isParentOfStudent = true;
+		        }
+		    }
+		    if (isParentOfStudent) {
+				logger.info("Parent is looking at childs grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		    } else {
+				logger.error("Parent is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+				RESTError error = new RESTError(5, "Parent is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_STUDENT")) {
+			logger.info("Logged in user is a student.");
+			StudentEntity loggedStudent = (StudentEntity) currentUser;
+			if (loggedStudent.getId().equals(user.get().getId())) {
+				logger.info("Student is looking at its own grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+			} else {
+				logger.error("Student is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+				RESTError error = new RESTError(6, "Student is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<RESTError>(new RESTError(7, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
 	
 	@Override
-	public ResponseEntity<?> findFinalGrades(Integer userId, Integer tsId, Integer sbId) {
+	public ResponseEntity<?> findFinalGrades(Integer userId, Integer tsId, Integer sbId, Authentication authentication) {
+		
+		String signedInUserEmail = authentication.getName();
+		UserEntity currentUser = userRepository.findByEmail(signedInUserEmail);
+		
 		Optional<UserEntity> user = userRepository.findById(userId);
 		Optional<TeacherSubject> teacherSubject = teacherSubjectRepository.findById(tsId);
 		Optional<SubjectEntity> subject = subjectRepository.findById(sbId);
@@ -158,8 +228,67 @@ public class GradeDaoImpl implements GradeDao {
 		query.setParameter("sbId", sbId);
 		
 		List<GradeEntity> result = query.getResultList();
-	
-		return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		
+		logger.info("Checking who is logged in user.");
+
+		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+			logger.info("Logged in user is a teacher.");
+		    TeacherEntity teacher = (TeacherEntity) currentUser;
+		    boolean isTeachingStudent = false;
+		    for (TeacherSubject teachingSubject : teacher.getTeacherSubject()) {
+		        if (teachingSubject.getStudents().contains(user.get())) {
+					logger.info("Correct! Student is taking this teaching subject");
+		            isTeachingStudent = true;
+		        }
+		    }
+		    if (isTeachingStudent) {
+				logger.info("Teacher is looking at students grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		    } else {
+		        logger.error("Teacher is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        RESTError error = new RESTError(4, "Teacher is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+		    }
+		}
+		
+		if (currentUser.getRole().equals("ROLE_PARENT")) {
+			logger.info("Logged in user is a students parent.");
+			ParentEntity parent = (ParentEntity) currentUser;
+		    boolean isParentOfStudent = false;
+		    for (StudentEntity child : parent.getStudent()) {
+		    	if (child.getId().equals(user.get().getId())) {
+					logger.info("Correct! This is a parent to this student");
+		    		isParentOfStudent = true;
+		        }
+		    }
+		    if (isParentOfStudent) {
+				logger.info("Parent is looking at childs grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		    } else {
+				logger.error("Parent is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+				RESTError error = new RESTError(5, "Parent is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_STUDENT")) {
+			logger.info("Logged in user is a student.");
+			StudentEntity loggedStudent = (StudentEntity) currentUser;
+			if (loggedStudent.getId().equals(user.get().getId())) {
+				logger.info("Student is looking at its own grades.");
+		        return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+			} else {
+				logger.error("Student is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+				RESTError error = new RESTError(6, "Student is unauthorized to looked at " + user.get().getFirstName() + " " + user.get().getLastName() + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<RESTError>(new RESTError(7, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
 
 }
