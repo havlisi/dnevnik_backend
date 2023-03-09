@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
-import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
-import com.iktpreobuka.projekat.repositories.UserRepository;
 import com.iktpreobuka.projekat.security.Views;
+import com.iktpreobuka.projekat.services.TeacherDaoImpl;
 import com.iktpreobuka.projekat.utils.RESTError;
 import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
@@ -34,7 +32,7 @@ public class TeacherController {
 	private TeacherRepository teacherRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private TeacherDaoImpl teacherDaoImpl;
 	
 	@Autowired
 	UserCustomValidator userValidator;
@@ -42,6 +40,7 @@ public class TeacherController {
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
@@ -137,111 +136,25 @@ public class TeacherController {
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
 	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser, BindingResult result) {
-		
-		if (result.hasErrors()) {
-	        logger.error("Sent incorrect parameters.");
-			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
-		} else {
-	        logger.info("Validating if the users password matches the confirming password");
-			userValidator.validate(newUser, result);
-		}
-
-		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
-        logger.info("Finding out whether there's a user with the same email.");
-
-		if (existingUserWithEmail != null) {
-	        logger.error("There is a user with the same email.");
-			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
-		}
-
-		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
-        logger.info("Finding out whether there's a user with the same username.");
-
-		if (existingUserWithUsername != null) {
-	        logger.error("There is a user with the same username.");
-			return new ResponseEntity<RESTError>(new RESTError(2, "Username already exists"), HttpStatus.CONFLICT);
-		}
-		
-		TeacherEntity newTeacher = new TeacherEntity();
-		
-		newTeacher.setFirstName(newUser.getFirstName());
-		newTeacher.setLastName(newUser.getLastName());
-		newTeacher.setUsername(newUser.getUsername());
-		newTeacher.setEmail(newUser.getEmail());
-		newTeacher.setPassword(newUser.getPassword());
-
-		newTeacher.setRole("ROLE_TEACHER");
-        logger.info("Setting users role.");
-
-		teacherRepository.save(newTeacher);
-        logger.info("Saving teacher to the database");
-
-		return new ResponseEntity<TeacherEntity>(newTeacher, HttpStatus.CREATED);
+		return teacherDaoImpl.createTeacher(newUser, result);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacher/{id}")
 	public ResponseEntity<?> updateTeacher(@Valid @RequestBody UserDTO updatedUser, BindingResult result, @PathVariable Integer id) {
-
-		if (result.hasErrors()) {
-	        logger.error("Sent incorrect parameters.");
-			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
-		} else {
-	        logger.info("Validating if the users password matches the confirming password");
-			userValidator.validate(updatedUser, result);
-		}
-		
-		TeacherEntity teacher = teacherRepository.findById(id).orElse(null);
-
-		if (teacher == null) {
-	        logger.error("There is no teacher found with " + id);
-			return new ResponseEntity<RESTError>(new RESTError(1, "No teacher found"), HttpStatus.NOT_FOUND);
-		}
-
-		teacher.setFirstName(updatedUser.getFirstName());
-		teacher.setLastName(updatedUser.getLastName());
-		teacher.setUsername(updatedUser.getUsername());
-		teacher.setEmail(updatedUser.getEmail());
-
-		teacherRepository.save(teacher);
-        logger.info("Saving teacher to the database");
-
-		return new ResponseEntity<TeacherEntity>(teacher, HttpStatus.OK);
+		return teacherDaoImpl.updateTeacher(updatedUser, result, id);
 	}
-
-	// @Secured("ROLE_ADMIN")
-	// TODO dodati metodu za postavljanje predmeta profesoru
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-id/{id}")
 	public ResponseEntity<?> deleteTeacherByID(@PathVariable Integer id) {
-		Optional<TeacherEntity> teacher = teacherRepository.findById(id);
-
-		if (teacher.isPresent()) {
-			teacherRepository.delete(teacher.get());
-	        logger.info("Deleting the teacher from the database");
-			return new ResponseEntity<>("Teacher with ID " + id + " has been successfully deleted.", HttpStatus.OK);
-		} else {
-	        logger.error("There is no teacher found with " + id);
-			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
-		}
+		return teacherDaoImpl.deleteTeacherByID(id);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-username/{username}")
 	public ResponseEntity<?> deleteTeacherByUsername(@PathVariable String username) {
-		Optional<TeacherEntity> teacher = teacherRepository.findByUsername(username);
-
-		if (teacher.isPresent()) {
-			teacherRepository.delete(teacher.get());
-	        logger.info("Deleting the teacher from the database");
-			return new ResponseEntity<>("Teacher with " + username + " username has been successfully deleted.",
-					HttpStatus.OK);
-		} else {
-	        logger.error("There is no teacher found with " + username);
-			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
-		}
-
+		return teacherDaoImpl.deleteTeacherByUsername(username);
 	}
 
 }

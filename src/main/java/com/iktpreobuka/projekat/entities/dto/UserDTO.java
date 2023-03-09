@@ -31,7 +31,7 @@ public class UserDTO {
 			+ "{min} characters long.")
 	private String password;
 	
-	@NotNull(message = "Password must be provided.")
+	@NotNull(message = "Confirmation password must be provided.")
 	@Size(min = 5, message = "Password must be minimum "
 			+ "{min} characters long.")
 	private String confirmed_password;

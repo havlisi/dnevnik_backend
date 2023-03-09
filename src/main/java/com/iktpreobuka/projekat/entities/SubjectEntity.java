@@ -31,11 +31,11 @@ public class SubjectEntity {
 	@JsonView(Views.Public.class)
 	private String subjectName;
 	
-	@JsonView(Views.Admin.class) //TODO ne bi trebalo biti public?
+	@JsonView(Views.Admin.class)
 	private Integer fondCasova;
 	
 	@OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<TeacherSubject> teacherSubject = new ArrayList<>();
+	private List<TeacherSubject> teacherSubjects = new ArrayList<>();
 
 	public SubjectEntity() {}
 
@@ -45,7 +45,7 @@ public class SubjectEntity {
 		this.id = id;
 		this.subjectName = subjectName;
 		this.fondCasova = fondCasova;
-		this.teacherSubject = teacherSubject;
+		this.teacherSubjects = teacherSubject;
 	}
 
 	public Integer getId() {
@@ -72,12 +72,12 @@ public class SubjectEntity {
 		this.fondCasova = fondCasova;
 	}
 
-	public List<TeacherSubject> getTeacherSubject() {
-		return teacherSubject;
+	public List<TeacherSubject> getTeacherSubjects() {
+		return teacherSubjects;
 	}
 
-	public void setTeacherSubject(List<TeacherSubject> teacherSubject) {
-		this.teacherSubject = teacherSubject;
+	public void setTeacherSubjects(List<TeacherSubject> teacherSubject) {
+		this.teacherSubjects = teacherSubject;
 	}
 
 }
