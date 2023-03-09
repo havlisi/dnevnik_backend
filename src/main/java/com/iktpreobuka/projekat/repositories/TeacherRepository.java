@@ -18,4 +18,6 @@ public interface TeacherRepository extends CrudRepository<TeacherEntity, Integer
 
 	List<TeacherEntity> findByFirstName(String firstName);
 
+	Optional<TeacherEntity> findById(Integer teacher_id);
+
 }

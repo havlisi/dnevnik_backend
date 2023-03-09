@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
+import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
+import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 import com.iktpreobuka.projekat.repositories.UserRepository;
 import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.RESTError;
@@ -34,6 +36,9 @@ public class TeacherController {
 	private TeacherRepository teacherRepository;
 	
 	@Autowired
+	private TeacherSubjectRepository teacherSubjectRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
@@ -42,6 +47,7 @@ public class TeacherController {
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
@@ -209,22 +215,23 @@ public class TeacherController {
 		return new ResponseEntity<TeacherEntity>(teacher, HttpStatus.OK);
 	}
 
-	// @Secured("ROLE_ADMIN")
-	// TODO dodati metodu za postavljanje predmeta profesoru
-
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-id/{id}")
 	public ResponseEntity<?> deleteTeacherByID(@PathVariable Integer id) {
 		Optional<TeacherEntity> teacher = teacherRepository.findById(id);
 
-		if (teacher.isPresent()) {
-			teacherRepository.delete(teacher.get());
-	        logger.info("Deleting the teacher from the database");
-			return new ResponseEntity<>("Teacher with ID " + id + " has been successfully deleted.", HttpStatus.OK);
-		} else {
-	        logger.error("There is no teacher found with " + id);
+		if (!teacher.isPresent()) {
+			logger.error("There is no teacher found with " + id);
 			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
 		}
+		
+		for (TeacherSubject teacherSubject : teacher.get().getTeacherSubject()) {
+			teacherSubjectRepository.delete(teacherSubject);
+		}
+		
+		teacherRepository.delete(teacher.get());
+        logger.info("Deleting the teacher from the database");
+		return new ResponseEntity<>("Teacher with ID " + id + " has been successfully deleted.", HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -232,16 +239,18 @@ public class TeacherController {
 	public ResponseEntity<?> deleteTeacherByUsername(@PathVariable String username) {
 		Optional<TeacherEntity> teacher = teacherRepository.findByUsername(username);
 
-		if (teacher.isPresent()) {
-			teacherRepository.delete(teacher.get());
-	        logger.info("Deleting the teacher from the database");
-			return new ResponseEntity<>("Teacher with " + username + " username has been successfully deleted.",
-					HttpStatus.OK);
-		} else {
-	        logger.error("There is no teacher found with " + username);
+		if (!teacher.isPresent()) {
+			logger.error("There is no teacher found with " + username);
 			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
 		}
-
+		
+		for (TeacherSubject teacherSubject : teacher.get().getTeacherSubject()) {
+			teacherSubjectRepository.delete(teacherSubject);
+		}
+		
+		teacherRepository.delete(teacher.get());
+        logger.info("Deleting the teacher from the database");
+		return new ResponseEntity<>("Teacher with " + username + " has been successfully deleted.", HttpStatus.OK);
 	}
 
 }

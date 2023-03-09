@@ -173,6 +173,114 @@ public class GradeController {
 
 		return new ResponseEntity<RESTError>(new RESTError(6, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
+	
+	
+	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
+	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentId")
+	public ResponseEntity<?> getGradesByStudentIdForSubject(@RequestParam Integer id,
+			@RequestParam String subject_name, Authentication authentication) {
+		
+		String signedInUserEmail = authentication.getName();
+		UserEntity currentUser = userRepository.findByEmail(signedInUserEmail);
+		
+		Optional<StudentEntity> student = studentRepository.findById(id);
+		
+		if (!student.isPresent()) {
+			logger.error("Student with " + id + " ID not found");
+			RESTError error = new RESTError(1, "Student with " + id + " ID not found");
+			return new ResponseEntity<RESTError>(error, HttpStatus.NOT_FOUND);
+		}
+		
+		List<GradeEntity> grades = student.get().getGrades();
+
+		if (grades.isEmpty()) {
+			logger.error("Grades for student " + id + " not found");
+			return new ResponseEntity<RESTError>(new RESTError(2, "Grades for student with " 
+					+ id + " ID not found"), HttpStatus.NOT_FOUND);
+		}
+		
+		List<GradeSubjectDTO> gradesWithSubjects = new ArrayList<GradeSubjectDTO>();
+		for (GradeEntity grade : grades) {
+			if (grade.getTeacherSubject().getSubject().getSubjectName().equals(subject_name)) {
+				GradeSubjectDTO gradeSubject = new GradeSubjectDTO(grade.getGrade(), grade.isFirstSemester(), 
+						grade.getTeacherSubject().getSubject().getSubjectName());
+				gradesWithSubjects.add(gradeSubject);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+			logger.info("Logged in user is a teacher.");
+		    TeacherEntity teacher = (TeacherEntity) currentUser;
+		    boolean isTeachingStudent = false;
+		    for (TeacherSubject teachingSubject : teacher.getTeacherSubject()) {
+		        if (teachingSubject.getStudents().contains(student.get())) {
+					logger.info("Correct! Student is taking this teaching subject");
+		            isTeachingStudent = true;
+		        }
+		    }
+		    if (isTeachingStudent) {
+				logger.info("Teacher is looking at students grades.");
+		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
+		    } else {
+		        logger.error("Teacher is unauthorized to looked at " + id + " grades.");
+		        RESTError error = new RESTError(3, "Teacher is unauthorized to looked at " + id + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+		    }
+		}
+		
+		if (currentUser.getRole().equals("ROLE_PARENT")) {
+			logger.info("Logged in user is a students parent.");
+			ParentEntity parent = (ParentEntity) currentUser;
+		    boolean isParentOfStudent = false;
+		    for (StudentEntity child : parent.getStudent()) {
+		    	if (child.getId().equals(student.get().getId())) {
+					logger.info("Correct! This is a parent to this student");
+		    		isParentOfStudent = true;
+		        }
+		    }
+		    if (isParentOfStudent) {
+				logger.info("Parent is looking at childs grades.");
+		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
+		    } else {
+				logger.error("Parent is unauthorized to looked at " + id + " grades.");
+				RESTError error = new RESTError(4, "Parent is unauthorized to looked at " + id + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+		
+		if (currentUser.getRole().equals("ROLE_STUDENT")) {
+			logger.info("Logged in user is a student.");
+			StudentEntity loggedStudent = (StudentEntity) currentUser;
+			if (loggedStudent.getId().equals(student.get().getId())) {
+				logger.info("Student is looking at its own grades.");
+		        return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
+			} else {
+				logger.error("Student is unauthorized to looked at " + id + " grades.");
+				RESTError error = new RESTError(5, "Student is unauthorized to looked at " + id + " grades.");
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+			}
+		}
+
+		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+		    return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<RESTError>(new RESTError(6, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
+	}
+	
+	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
+	@RequestMapping(method = RequestMethod.GET, value = "allGrades/by_studentUsername/for-subject")
+	public ResponseEntity<?> getGradesByStudentUsernameForSubject(@RequestParam String username,
+			@RequestParam String subject_name, Authentication authentication) {
+		
+		List<GradeSubjectDTO> gradesWithSubjects = new ArrayList<GradeSubjectDTO>();
+		for (GradeSubjectDTO gradeSubject : (List<GradeSubjectDTO>)(getGradesByStudentUsername(username, authentication).getBody())) {
+			if (gradeSubject.getSubjectName().equals(subject_name)) {
+				gradesWithSubjects.add(gradeSubject);
+			}
+		}		
+		return new ResponseEntity<List<GradeSubjectDTO>>(gradesWithSubjects, HttpStatus.OK);
+	}
 			
 	@Secured({"ROLE_STUDENT", "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_PARENT"})
 	@RequestMapping(method = RequestMethod.GET, value = "/semester")
@@ -284,14 +392,14 @@ public class GradeController {
 		}
 		
 		if (grade == null) {
-	        logger.error("There is no grade found with " + grade);
-			return new ResponseEntity<RESTError>(new RESTError(1, "There is no grade with this id " + grade), HttpStatus.NOT_FOUND);
+	        logger.error("There is no grade found with " + grade_id);
+			return new ResponseEntity<RESTError>(new RESTError(1, "There is no grade with this id " + grade_id), HttpStatus.NOT_FOUND);
 		}
 
 		if (!grade.getTeacherSubject().getId().equals(teachingSubject.getId())) {
-	        logger.error("Grade with this id " + grade + " doesn't exist for this teaching subject");
+	        logger.error("Grade with this id " + grade_id + " doesn't exist for this teaching subject");
 
-			return new ResponseEntity<RESTError>(new RESTError(2,  "Grade with this id " + grade 
+			return new ResponseEntity<RESTError>(new RESTError(2,  "Grade with this id " + grade_id 
 					+ " doesn't exist for this teaching subject"), HttpStatus.NOT_FOUND);
 		}
 		

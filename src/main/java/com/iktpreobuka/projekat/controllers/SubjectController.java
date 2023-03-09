@@ -1,9 +1,7 @@
 package com.iktpreobuka.projekat.controllers;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.SubjectEntity;
+import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.SubjectDTO;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
+import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
@@ -32,9 +31,13 @@ public class SubjectController {
 	@Autowired
 	private SubjectRepository subjectRepository;
 	
+	@Autowired
+	private TeacherSubjectRepository teacherSubjectRepository;
+	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllSubjects() {
@@ -48,10 +51,6 @@ public class SubjectController {
 			return new ResponseEntity<List<SubjectEntity>>(subjects, HttpStatus.OK);
 		}
 	}
-
-	//TODO razmisliti mozda prof, ili dodati endpoint da prof moze da vidi svoje subj
-	
-	//TODO find by id, subjname
 	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
@@ -117,6 +116,10 @@ public class SubjectController {
 			return new ResponseEntity<RESTError>(new RESTError(1, "No subject with " + id + " ID found"), HttpStatus.NOT_FOUND);
 		}
 
+		for (TeacherSubject teachingSubject : subject.getTeacherSubjects()) {
+			teacherSubjectRepository.delete(teachingSubject);
+		}
+		
 		subjectRepository.delete(subject);
         logger.info("Deleting subject from the database");
 
@@ -133,7 +136,11 @@ public class SubjectController {
 	        logger.error("No subject with name: " + name + " found");
 			return new ResponseEntity<RESTError>(new RESTError(1, "No subject called " + name + " found"), HttpStatus.NOT_FOUND);
 		}
-
+		
+		for (TeacherSubject teachingSubject : subject.getTeacherSubjects()) {
+			teacherSubjectRepository.delete(teachingSubject);
+		}
+		
 		subjectRepository.delete(subject);
         logger.info("Deleting subject from the database");
 

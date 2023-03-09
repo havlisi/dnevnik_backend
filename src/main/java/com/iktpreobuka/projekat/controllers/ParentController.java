@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
+import com.iktpreobuka.projekat.entities.TeacherEntity;
+import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
@@ -47,6 +50,7 @@ public class ParentController {
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
+	
 	@Secured("ROLE_ADMIN")
 	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET)
@@ -56,67 +60,61 @@ public class ParentController {
 		if (parents.isEmpty()) {
 	        logger.error("No parents found in the database.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "No parents found"), HttpStatus.NOT_FOUND);
-		} else {
-	        logger.info("Found parent(s) in the database");
-			return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 		}
+	    logger.info("Found parent(s) in the database");
+		return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@JsonView(Views.Admin.class)
-	// prodji kroz student servis metodu koja trazi sve studente nekog predmeta pa pronadji get parent by id
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")
 	public ResponseEntity<?> getParentById(@PathVariable Integer id) {
 		Optional<ParentEntity> parent = parentRepository.findById(id);
-		if (parent.isPresent()) {
-	        logger.info("Parent found in the database: " + parent.get().getFirstName() + parent.get().getLastName() + ".");
-			return new ResponseEntity<ParentEntity>(parent.get(), HttpStatus.OK);
-		} else {
-	        logger.error("No parent found in the database with: " + id + ".");
-			return new ResponseEntity<RESTError>(new RESTError(1, "No parent found"), HttpStatus.NOT_FOUND);
+		if (!parent.isPresent()) {
+			logger.error("No parent found in the database with: " + id + ".");
+			return new ResponseEntity<RESTError>(new RESTError(1, "No parent found"), HttpStatus.NOT_FOUND);  
 		}
+		logger.info("Parent found in the database: " + parent.get().getFirstName() + parent.get().getLastName() + ".");
+		return new ResponseEntity<ParentEntity>(parent.get(), HttpStatus.OK);
 	}
 
-	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
-	// prodji kroz student servis metodu koja trazi sve studente nekog predmeta pa pronadji get parent by username
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-username/{username}")
 	public ResponseEntity<?> getParentByUsername(@PathVariable String username) {
 		Optional<ParentEntity> parent = parentRepository.findByUsername(username);
-		if (parent.isPresent()) {
-	        logger.info("Parent found in the database: " + parent.get().getUsername() + ".");
-			return new ResponseEntity<ParentEntity>(parent.get(), HttpStatus.OK);
-		} else {
-	        logger.error("No parent found in the database with " + username + ".");
-			return new ResponseEntity<RESTError>(new RESTError(1, "No parent found"), HttpStatus.NOT_FOUND);
+		if (!parent.isPresent()) {
+			logger.error("No parent found in the database with " + username + ".");
+			return new ResponseEntity<RESTError>(new RESTError(1, "No parent found"), HttpStatus.NOT_FOUND); 
 		}
+		logger.info("Parent found in the database: " + parent.get().getUsername() + ".");
+		return new ResponseEntity<ParentEntity>(parent.get(), HttpStatus.OK);
 	}
 
-	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
-	// prodji kroz student servis metodu koja trazi sve studente nekog predmeta pa pronadji get parent by firstname
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstName/{firstName}")
 	public ResponseEntity<?> getParentByFirstName(@PathVariable String firstName) {
 		List<ParentEntity> parents = parentRepository.findByFirstName(firstName);
 		if (parents.isEmpty()) {
 	        logger.error("No parents found in the database with name: " + firstName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No parents found"), HttpStatus.NOT_FOUND);
-		} else {
-	        logger.info("Found parents with name - " + firstName + " in the database.");
-			return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 		}
+	    logger.info("Found parents with name - " + firstName + " in the database.");
+	    return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 	}
 
-	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
-	// prodji kroz student servis metodu koja trazi sve studente nekog predmeta pa pronadji get parent by lastname
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-lastName/{lastName}")
 	public ResponseEntity<?> getParentsByLastName(@PathVariable String lastName) {
 		List<ParentEntity> parents = parentRepository.findByLastName(lastName);
 		if (parents.isEmpty()) {
 	        logger.error("No parents found in the database with lastname: " + lastName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No parents found"), HttpStatus.NOT_FOUND);
-		} else {
-	        logger.info("Found parents with lastname: " + lastName + " in the database.");
-			return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 		}
+		logger.info("Found parents with lastname: " + lastName + " in the database.");
+		return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -133,7 +131,8 @@ public class ParentController {
 		}
 	}
 
-	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-email/{email}")
 	public ResponseEntity<?> getParentByEmail(@PathVariable String email) {
 		Optional<ParentEntity> parent = parentRepository.findByEmail(email);
@@ -148,7 +147,11 @@ public class ParentController {
 
 	@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
 	@RequestMapping(method = RequestMethod.GET, value = "/by-student/{student_id}")
-	public ResponseEntity<?> getParentByStudent(@PathVariable Integer student_id) {
+	public ResponseEntity<?> getParentByStudent(@PathVariable Integer student_id, Authentication authentication) {
+		
+		String signedInUserEmail = authentication.getName();
+		UserEntity currentUser = userRepository.findByEmail(signedInUserEmail);
+		
 		StudentEntity student = studentRepository.findById(student_id).orElse(null);
 		ParentEntity parent = parentRepository.findByStudent(student);
 
@@ -162,11 +165,35 @@ public class ParentController {
 			return new ResponseEntity<RESTError>(new RESTError(2, "No parent found"), HttpStatus.NOT_FOUND);
 		}
 		
-		// ako se uloguje teacher
-		// onda proveri da li predaje tom studentu
-		// tek onda reci ko je parent
-
-		return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
+		logger.info("Checking who is the logged in user.");
+		
+		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+			logger.info("Logged in user is a teacher.");
+		    TeacherEntity teacher = (TeacherEntity) currentUser;
+		    boolean isTeachingStudent = false;
+		    for (TeacherSubject teachingSubject : teacher.getTeacherSubject()) {
+		        if (teachingSubject.getStudents().contains(student)) {
+					logger.info("Correct! Student is taking this teaching subject");
+		            isTeachingStudent = true;
+		        }
+		    }
+		    if (isTeachingStudent) {
+				logger.info("Teacher is findig students parent.");
+		        return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
+		    } else {
+		        logger.error("Teacher is unauthorized to get parent from " + student.getFirstName() + " " + student.getLastName());
+		        RESTError error = new RESTError(3, "Teacher is unauthorized to get parent from " + student.getFirstName() + " " + student.getLastName());
+		        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
+		    }
+		}
+		
+		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			logger.info("Admin is findig students parent.");
+			return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
+		}
+		
+		RESTError error = new RESTError(4, "User is unauthorized to get parent from " + student.getFirstName() + " " + student.getLastName());
+        return new ResponseEntity<RESTError>(error, HttpStatus.UNAUTHORIZED);
 	}
 
 	@Secured("ROLE_ADMIN")

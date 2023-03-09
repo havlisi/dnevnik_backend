@@ -19,18 +19,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
+import com.iktpreobuka.projekat.entities.GradeEntity;
 import com.iktpreobuka.projekat.entities.ParentEntity;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
+import com.iktpreobuka.projekat.repositories.GradeRepository;
 import com.iktpreobuka.projekat.repositories.ParentRepository;
 import com.iktpreobuka.projekat.repositories.StudentRepository;
+import com.iktpreobuka.projekat.repositories.TeacherRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
 import com.iktpreobuka.projekat.repositories.UserRepository;
 import com.iktpreobuka.projekat.security.Views;
+import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
 import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
@@ -49,6 +52,9 @@ public class StudentController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private GradeRepository gradeRepository;
 	
 	@Autowired
 	UserCustomValidator userValidator;
@@ -70,11 +76,7 @@ public class StudentController {
 	        logger.info("Found student(s) in the database");
 			return new ResponseEntity<List<StudentEntity>>(students, HttpStatus.OK);
 		}
-	}
-	
-	//TODO dodati rest za profesore da vide samo njihove studente
-	//@Secured({"ROLE_ADMIN", "ROLE_TEACHER"})
-	//getAllStudentByTeacherID
+	}	
 
 	@Secured("ROLE_ADMIN")
 	@JsonView(Views.Admin.class)
@@ -122,6 +124,7 @@ public class StudentController {
 
 		if (currentUser.getRole().equals("ROLE_TEACHER")) {
 			TeacherEntity teacher = (TeacherEntity) currentUser;
+			
 			List<StudentEntity> teachersStudents = new ArrayList<StudentEntity>();
 			for (StudentEntity student : allStudents) {
 				for (TeacherSubject teacherSubject : student.getTeacherSubjects()) {
@@ -342,6 +345,11 @@ public class StudentController {
 		Optional<StudentEntity> student = studentRepository.findByUsername(username);
 
 		if (student.isPresent()) {
+			
+			for (GradeEntity grade : student.get().getGrades()) {
+				gradeRepository.delete(grade);
+			}
+			
 			studentRepository.delete(student.get());
 	        logger.info("Deleting the student from the database");
 			return new ResponseEntity<>("Student with " + username + " username has been successfully deleted.",
@@ -383,6 +391,14 @@ public class StudentController {
 		
 		return new ResponseEntity<>("Parent with id " + parents_id + " was successfully removed from "
 				+ "student with id " + students_id, HttpStatus.OK);
+	}
+	
+	//EASTER EGG REST ENDPOINT
+	@Secured("ROLE_STUDENT")
+	@RequestMapping(method = RequestMethod.POST, value = "/dositejeva")
+	public String zahtevZaDositejevuStipendiju () {
+		return "Uspešno ste poslali zahtev za Dositejevu stipendiju!\n "
+				+ "Udjite na link da vidite status: https://i.kym-cdn.com/photos/images/newsfeed/001/499/826/2f0.png ";
 	}
 
 }

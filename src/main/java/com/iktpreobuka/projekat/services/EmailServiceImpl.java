@@ -37,7 +37,8 @@ public class EmailServiceImpl implements EmailService{
 		
 		EmailDTO email = new EmailDTO();
 
-		email.setTo(student.getParent().getEmail());
+		//email.setTo(student.getParent().getEmail());
+		email.setTo("isidorahavlovic@gmail.com");
 		logger.info("Setting up parents email address");
 		
 		email.setSubject("Ocena - " + teachingSubject.getSubject().getSubjectName());
