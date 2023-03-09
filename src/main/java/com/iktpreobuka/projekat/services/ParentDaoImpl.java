@@ -74,7 +74,7 @@ public class ParentDaoImpl {
 		        }
 		    }
 		    if (isTeachingStudent) {
-				logger.info("Teacher is findig students parent.");
+				logger.info("Teacher is finding students parent.");
 		        return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
 		    } else {
 		        logger.error("Teacher is unauthorized to get parent from " + student.getFirstName() + " " + student.getLastName());
@@ -84,7 +84,7 @@ public class ParentDaoImpl {
 		}
 		
 		if (currentUser.getRole().equals("ROLE_ADMIN")) {
-			logger.info("Admin is findig students parent.");
+			logger.info("Admin is finding students parent.");
 			return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
 		}
 		
