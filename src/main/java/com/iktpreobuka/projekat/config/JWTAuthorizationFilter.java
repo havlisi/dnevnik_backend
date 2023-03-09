@@ -22,9 +22,13 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
+	
 	private final String HEADER = "Authorization";
+	
 	private final String PREFIX = "Bearer ";
+	
 	private SecretKey secretKey;
+	
 
 	public JWTAuthorizationFilter(SecretKey secretKey) {
 		super();

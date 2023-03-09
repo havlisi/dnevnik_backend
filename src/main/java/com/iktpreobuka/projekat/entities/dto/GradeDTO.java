@@ -10,8 +10,6 @@ public class GradeDTO {
 	
 	private Integer teachsubj_id;
 	
-	private Integer grade_id;
-	
 	@NotNull(message = "The 'firstSemester' field must be set to true or false")
 	private boolean firstSemester;
 
@@ -22,13 +20,12 @@ public class GradeDTO {
 
 	public GradeDTO() {}
 	
-	public GradeDTO(Integer student_id, Integer teachsubj_id, Integer grade_id,
+	public GradeDTO(Integer student_id, Integer teachsubj_id, 
 			@NotNull(message = "The 'firstSemester' field must be set to true or false") boolean firstSemester,
 			@NotNull(message = "Grade must be provided") @Min(value = 1, message = "Grade must be between 1 and 5") @Max(value = 5, message = "Grade must be between 1 and 5") Integer gradeValue) {
 		super();
 		this.student_id = student_id;
 		this.teachsubj_id = teachsubj_id;
-		this.grade_id = grade_id;
 		this.firstSemester = firstSemester;
 		this.gradeValue = gradeValue;
 	}
@@ -47,14 +44,6 @@ public class GradeDTO {
 
 	public void setTeachsubj_id(Integer teachsubj_id) {
 		this.teachsubj_id = teachsubj_id;
-	}
-
-	public Integer getGrade_id() {
-		return grade_id;
-	}
-
-	public void setGrade_id(Integer grade_id) {
-		this.grade_id = grade_id;
 	}
 
 	public boolean isFirstSemester() {

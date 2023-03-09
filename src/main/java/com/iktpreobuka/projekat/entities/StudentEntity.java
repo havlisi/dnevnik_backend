@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -29,6 +31,7 @@ public class StudentEntity extends UserEntity {
 	)
 	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<GradeEntity> grades = new ArrayList<>();
 	

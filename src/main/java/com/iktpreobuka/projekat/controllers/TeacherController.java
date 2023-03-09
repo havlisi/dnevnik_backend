@@ -8,18 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.entities.TeacherEntity;
+import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.TeacherRepository;
+import com.iktpreobuka.projekat.repositories.UserRepository;
 import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.RESTError;
 import com.iktpreobuka.projekat.utils.UserCustomValidator;
@@ -32,11 +34,15 @@ public class TeacherController {
 	private TeacherRepository teacherRepository;
 	
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
 	UserCustomValidator userValidator;
 	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeachers() {
 		List<TeacherEntity> teachers = (List<TeacherEntity>) teacherRepository.findAll();
@@ -50,30 +56,33 @@ public class TeacherController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{id}")
 	public ResponseEntity<?> getTeacherById(@PathVariable Integer id) {
 		Optional<TeacherEntity> teacher = teacherRepository.findById(id);
 		if (teacher.isPresent()) {
-	        logger.info("Teacher found in the database: " + teacher.get().getFirstName() + teacher.get().getLastName() + " .");
+	        logger.info("Teacher found in the database: " + teacher.get().getFirstName() + teacher.get().getLastName() + ".");
 			return new ResponseEntity<TeacherEntity>(teacher.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No teacher found in the database with: " + teacher.get().getId() + " .");
+	        logger.error("No teacher found in the database with: " + id + ".");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-username/{username}")
 	public ResponseEntity<?> getTeacherByUsername(@PathVariable String username) {
 		Optional<TeacherEntity> teacher = teacherRepository.findByUsername(username);
 		if (teacher.isPresent()) {
-	        logger.info("Teacher found in the database: " + teacher.get().getUsername() + " .");
+	        logger.info("Teacher found in the database: " + teacher.get().getUsername() + ".");
 			return new ResponseEntity<TeacherEntity>(teacher.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No teacher found in the database with " + teacher.get().getUsername() + " .");
+	        logger.error("No teacher found in the database with " + username + ".");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Teacher not found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstName/{firstName}")
 	public ResponseEntity<?> getTeacherByFirstName(@PathVariable String firstName) {
 		List<TeacherEntity> teacher = teacherRepository.findByFirstName(firstName);
@@ -81,11 +90,12 @@ public class TeacherController {
 	        logger.error("No teachers found in the database with name: " + firstName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No teacher found"), HttpStatus.NOT_FOUND);
 		} else {
-	        logger.info("Found teachers with name - " + firstName + " in the database .");
+	        logger.info("Found teachers with name - " + firstName + " in the database.");
 			return new ResponseEntity<List<TeacherEntity>>(teacher, HttpStatus.OK);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-lastName/{lastName}")
 	public ResponseEntity<?> getTeacherByLastName(@PathVariable String lastName) {
 		List<TeacherEntity> teachers = teacherRepository.findByLastName(lastName);
@@ -93,11 +103,12 @@ public class TeacherController {
 	        logger.error("No teachers found in the database with lastname" + lastName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No teachers found"), HttpStatus.NOT_FOUND);
 		} else {
-	        logger.info("Found teachers with lastname: " + lastName + " in the database .");
+	        logger.info("Found teachers with lastname: " + lastName + " in the database.");
 			return new ResponseEntity<List<TeacherEntity>>(teachers, HttpStatus.OK);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstLetter/{firstLetter}")
 	public ResponseEntity<?> getTeacherByFirstLetter(@PathVariable String firstLetter) {
 		List<TeacherEntity> teachers = teacherRepository.findByFirstNameStartingWith(firstLetter);
@@ -110,6 +121,7 @@ public class TeacherController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/by-email/{email}")
 	public ResponseEntity<?> getTeacherByEmail(@PathVariable String email) {
 		Optional<TeacherEntity> teacher = teacherRepository.findByEmail(email);
@@ -117,36 +129,40 @@ public class TeacherController {
 	        logger.info("Found teacher in the database with " + teacher.get().getEmail());
 			return new ResponseEntity<TeacherEntity>(teacher.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No teacher found in the database with " + teacher.get().getEmail());
+	        logger.error("No teacher found in the database with " + email);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No teacher found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherUser")
 	public ResponseEntity<?> createTeacher(@Valid @RequestBody UserDTO newUser, BindingResult result) {
 		
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
 			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		} else {
+	        logger.info("Validating if the users password matches the confirming password");
+			userValidator.validate(newUser, result);
 		}
-		
-		TeacherEntity newTeacher = new TeacherEntity();
 
-		TeacherEntity existingTeacherWithEmail = teacherRepository.findByEmail(newUser.getEmail()).orElse(null);
-        logger.info("Fiding out whether there's a user with the same email.");
+		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
+        logger.info("Finding out whether there's a user with the same email.");
 
-		if (existingTeacherWithEmail != null && newUser.getEmail().equals(existingTeacherWithEmail.getEmail())) {
+		if (existingUserWithEmail != null) {
 	        logger.error("There is a user with the same email.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
 		}
 
-		TeacherEntity existingTeacherWithUsername = teacherRepository.findByUsername(newUser.getUsername()).orElse(null);
-        logger.info("Fiding out whether there's a user with the same username.");
+		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
+        logger.info("Finding out whether there's a user with the same username.");
 
-		if (existingTeacherWithUsername != null && newUser.getUsername().equals(existingTeacherWithUsername.getUsername())) {
+		if (existingUserWithUsername != null) {
 	        logger.error("There is a user with the same username.");
 			return new ResponseEntity<RESTError>(new RESTError(2, "Username already exists"), HttpStatus.CONFLICT);
 		}
+		
+		TeacherEntity newTeacher = new TeacherEntity();
 		
 		newTeacher.setFirstName(newUser.getFirstName());
 		newTeacher.setLastName(newUser.getLastName());
@@ -163,9 +179,9 @@ public class TeacherController {
 		return new ResponseEntity<TeacherEntity>(newTeacher, HttpStatus.CREATED);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacher/{id}")
-	public ResponseEntity<?> updateTeacher(@Valid @RequestBody UserDTO updatedUser, @PathVariable Integer id,
-			@RequestParam String accessPass, BindingResult result) {
+	public ResponseEntity<?> updateTeacher(@Valid @RequestBody UserDTO updatedUser, BindingResult result, @PathVariable Integer id) {
 
 		if (result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
@@ -182,11 +198,6 @@ public class TeacherController {
 			return new ResponseEntity<RESTError>(new RESTError(1, "No teacher found"), HttpStatus.NOT_FOUND);
 		}
 
-		if (!teacher.getPassword().equals(accessPass)) {
-	        logger.error("The password isn't correct");
-			return new ResponseEntity<RESTError>(new RESTError(2, "Password is incorrect"), HttpStatus.BAD_REQUEST);
-		}
-
 		teacher.setFirstName(updatedUser.getFirstName());
 		teacher.setLastName(updatedUser.getLastName());
 		teacher.setUsername(updatedUser.getUsername());
@@ -198,8 +209,10 @@ public class TeacherController {
 		return new ResponseEntity<TeacherEntity>(teacher, HttpStatus.OK);
 	}
 
+	// @Secured("ROLE_ADMIN")
 	// TODO dodati metodu za postavljanje predmeta profesoru
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-id/{id}")
 	public ResponseEntity<?> deleteTeacherByID(@PathVariable Integer id) {
 		Optional<TeacherEntity> teacher = teacherRepository.findById(id);
@@ -214,6 +227,7 @@ public class TeacherController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteTeacher/by-username/{username}")
 	public ResponseEntity<?> deleteTeacherByUsername(@PathVariable String username) {
 		Optional<TeacherEntity> teacher = teacherRepository.findByUsername(username);

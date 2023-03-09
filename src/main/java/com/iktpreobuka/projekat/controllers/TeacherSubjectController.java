@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,12 +38,12 @@ public class TeacherSubjectController {
 
 	@Autowired
 	private TeacherRepository teacherRepository;
-
-	// TODO URADITI SVE/ SKONTATI STA SVE TREBA UOPSTE
+	
 	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllTeacherSubject() {
 		List<TeacherSubject> teacherSubjects = (List<TeacherSubject>) teacherSubjectRepository.findAll();
@@ -55,10 +56,14 @@ public class TeacherSubjectController {
 			return new ResponseEntity<List<TeacherSubject>>(teacherSubjects, HttpStatus.OK);
 		}
 	}
+	
+	//@secured("ROLE_TEACHER")
+	//getAllTeachersTeachingSubjects 
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, value = "/newTeacherSubject/subj/{subj_id}/teach/{teacher_id}")
 	public ResponseEntity<?> createTeacherSubject(@Valid @RequestBody TeacherSubjectDTO newTeacherSubject,
-			@PathVariable Integer teacher_id, @PathVariable Integer subj_id, BindingResult result) {
+			BindingResult result, @PathVariable Integer teacher_id, @PathVariable Integer subj_id) {
 		
 		if(result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
@@ -91,9 +96,15 @@ public class TeacherSubjectController {
 		return new ResponseEntity<TeacherSubject>(teacherSubjects, HttpStatus.CREATED);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateTeacherSubject/{id}")
-	public ResponseEntity<?> updateTeacherSubject(@RequestBody TeacherSubjectDTO updatedTeacherSubject,
-			@PathVariable Integer id) {
+	public ResponseEntity<?> updateTeacherSubject(@Valid @RequestBody TeacherSubjectDTO updatedTeacherSubject,
+			BindingResult result, @PathVariable Integer id) {
+		
+		if(result.hasErrors()) {
+	        logger.error("Sent incorrect parameters.");
+			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
+		}
 		
 		TeacherSubject teacherSubjects = teacherSubjectRepository.findById(id).orElse(null);
 
@@ -104,15 +115,18 @@ public class TeacherSubjectController {
 
 		teacherSubjects.setClassYear(updatedTeacherSubject.getClassYear());
 
-		if (updatedTeacherSubject.getSubject() != null) {
-	        logger.debug("Subject value isn't null");
-			teacherSubjects.setSubject(updatedTeacherSubject.getSubject());
+		if (updatedTeacherSubject.getSubject() == null) {
+	        logger.info("Subject value is null");
+			return new ResponseEntity<RESTError>(new RESTError(2, "No subject found"), HttpStatus.NOT_FOUND);
 		}
-
-		if (updatedTeacherSubject.getTeacher() != null) {
-	        logger.debug("Teacher value isn't null");
-			teacherSubjects.setTeacher(updatedTeacherSubject.getTeacher());
+		teacherSubjects.setSubject(updatedTeacherSubject.getSubject());
+		
+		if (updatedTeacherSubject.getTeacher() == null) {
+	        logger.info("Teacher value is null");
+			return new ResponseEntity<RESTError>(new RESTError(3, "No teacher found"), HttpStatus.NOT_FOUND);
 		}
+		
+		teacherSubjects.setTeacher(updatedTeacherSubject.getTeacher());
 
 		teacherSubjectRepository.save(teacherSubjects);
         logger.info("Saving values for new teaching subject");
@@ -120,6 +134,7 @@ public class TeacherSubjectController {
 		return new ResponseEntity<TeacherSubject>(teacherSubjects, HttpStatus.OK);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteTeacherSubject/{id}")
 	public ResponseEntity<?> deleteTeacherSubject(@PathVariable Integer id) {
 		TeacherSubject teacherSubjects = teacherSubjectRepository.findById(id).orElse(null);

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,9 +25,7 @@ public class FileDownloadController {
 	@JsonView(Views.Admin.class) //TODO samo administrator može da vidi/preuzme logove
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
-	//SECURED ADMIN
-	//Zadatak treba da omogući da administrator i samo administrator može da
-	//vidi/preuzme logove.
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/download")
     public ResponseEntity<ByteArrayResource> downloadFile() throws IOException {
 
