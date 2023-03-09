@@ -17,6 +17,7 @@ import io.jsonwebtoken.security.Keys;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
+	
 	private SecretKey secretKey;
 
 	public WebSecurityConfig() {

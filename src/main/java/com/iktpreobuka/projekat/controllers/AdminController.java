@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.AdminEntity;
+import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
+import com.iktpreobuka.projekat.repositories.UserRepository;
 import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
@@ -36,9 +37,15 @@ public class AdminController {
 	@Autowired
 	UserCustomValidator userValidator;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
+	
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAdmin() {
 		try {
@@ -57,30 +64,36 @@ public class AdminController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{adminId}")
 	public ResponseEntity<?> getAdminById(@PathVariable Integer adminId) {
 		Optional<AdminEntity> admin = adminRepository.findById(adminId);
 		if (admin.isPresent()) {
-	        logger.info("Admin found in the database: " + admin.get().getFirstName() + admin.get().getLastName() + " .");
+	        logger.info("Admin found in the database: " + adminId + ".");
 			return new ResponseEntity<AdminEntity>(admin.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No admins found in the database with: " + admin.get().getId() + " .");
+	        logger.error("No admins found in the database with: " + adminId + ".");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Admin not found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-username/{username}")
 	public ResponseEntity<?> getAdminByUsername(@PathVariable String username) {
 		Optional<AdminEntity> admin = adminRepository.findByUsername(username);
 		if (admin.isPresent()) {
-	        logger.info("Admin found in the database: " + admin.get().getUsername() + " .");
+	        logger.info("Admin found in the database: " + username + " username.");
 			return new ResponseEntity<AdminEntity>(admin.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No admins found in the database with " + admin.get().getUsername() + " .");
+	        logger.error("No admins found in the database with " + username + " username.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Admin not found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstName/{firstName}")
 	public ResponseEntity<?> getAdminByFirstName(@PathVariable String firstName) {
 		List<AdminEntity> admins = adminRepository.findByFirstName(firstName);
@@ -88,11 +101,13 @@ public class AdminController {
 	        logger.error("No admins found in the database with name : " + firstName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No admins found"), HttpStatus.NOT_FOUND);
 		} else {
-	        logger.info("Found admins with name - " + firstName + " in the database .");
+	        logger.info("Found admins with name - " + firstName + " in the database.");
 			return new ResponseEntity<List<AdminEntity>>(admins, HttpStatus.OK);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-lastName/{lastName}")
 	public ResponseEntity<?> getAdminByLastName(@PathVariable String lastName) {
 		List<AdminEntity> admins = adminRepository.findByLastName(lastName);
@@ -100,11 +115,13 @@ public class AdminController {
 	        logger.error("No admins found in the database with lastname: " + lastName);
 			return new ResponseEntity<RESTError>(new RESTError(1, "No admins found"), HttpStatus.NOT_FOUND);
 		} else {
-	        logger.info("Found admins with lastname: " + lastName + " in the database .");
+	        logger.info("Found admins with lastname: " + lastName + " in the database.");
 			return new ResponseEntity<List<AdminEntity>>(admins, HttpStatus.OK);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstLetter/{firstLetter}")
 	public ResponseEntity<?> getAdminByFirstLetter(@PathVariable String firstLetter) {
 		List<AdminEntity> admins = adminRepository.findByFirstNameStartingWith(firstLetter);
@@ -117,43 +134,50 @@ public class AdminController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-email/{email}")
 	public ResponseEntity<?> getAdminByEmail(@PathVariable String email) {
 		Optional<AdminEntity> admin = adminRepository.findByEmail(email);
 		if (admin.isPresent()) {
-	        logger.info("Found admin in the database with " + admin.get().getEmail());
+	        logger.info("Found admin in the database with " + email);
 			return new ResponseEntity<AdminEntity>(admin.get(), HttpStatus.OK);
 		} else {
-	        logger.error("No admins found in the database with " + admin.get().getEmail());
+	        logger.error("No admins found in the database with " + email);
 			return new ResponseEntity<RESTError>(new RESTError(1, "Admin not found"), HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.POST, value = "/newAdminUser")
 	public ResponseEntity<?> createAdmin(@Valid @RequestBody UserDTO newUser, BindingResult result) {
 
 		if (result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
 			return new ResponseEntity<>(ErrorMessageHelper.createErrorMessage(result), HttpStatus.BAD_REQUEST);
-		} //TODO <?>
+		} else {
+	        logger.info("Validating if the users password matches the confirming password");
+			userValidator.validate(newUser, result);
+		}
 
-		AdminEntity newAdmin = new AdminEntity();
+		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
+        logger.info("Finding out whether there's a user with the same email.");
 
-		AdminEntity existingAdminWithEmail = adminRepository.findByEmail(newUser.getEmail()).orElse(null);		
-        logger.info("Fiding out whether there's a user with the same email.");
-
-		if (existingAdminWithEmail != null && newUser.getEmail().equals(existingAdminWithEmail.getEmail())) {
+		if (existingUserWithEmail != null) {
 	        logger.error("There is a user with the same email.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
 		}
 
-		AdminEntity existingAdminWithUsername = adminRepository.findByUsername(newUser.getUsername()).orElse(null);		
-        logger.info("Fiding out whether there's a user with the same username.");
+		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
+        logger.info("Finding out whether there's a user with the same username.");
 
-		if (existingAdminWithUsername != null && newUser.getUsername().equals(existingAdminWithUsername.getUsername())) {
+		if (existingUserWithUsername != null) {
 	        logger.error("There is a user with the same username.");
 			return new ResponseEntity<RESTError>(new RESTError(2, "Username already exists"), HttpStatus.CONFLICT);
 		}
+
+		AdminEntity newAdmin = new AdminEntity();
 
 		newAdmin.setFirstName(newUser.getFirstName());
 		newAdmin.setLastName(newUser.getLastName());
@@ -170,9 +194,10 @@ public class AdminController {
 		return new ResponseEntity<AdminEntity>(newAdmin, HttpStatus.CREATED);
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateAdmin/{admin_id}")
-	public ResponseEntity<?> updateAdmin(@Valid @RequestBody UserDTO updatedUser, @PathVariable Integer admin_id,
-			@RequestParam String accessPass, BindingResult result) {
+	public ResponseEntity<?> updateAdmin(@Valid @RequestBody UserDTO updatedUser, BindingResult result, @PathVariable Integer admin_id) {
 
 		if (result.hasErrors()) {
 	        logger.error("Sent incorrect parameters.");
@@ -188,10 +213,6 @@ public class AdminController {
 	        logger.error("There is no admin found with " + admin_id);
 			return new ResponseEntity<RESTError>(new RESTError(1, "Admin not found"), HttpStatus.NOT_FOUND);
 		}
-		if (!admin.getPassword().equals(accessPass)) {
-	        logger.error("The password isn't correct");
-			return new ResponseEntity<RESTError>(new RESTError(2, "Password is incorrect"), HttpStatus.BAD_REQUEST);
-		}
 
 		admin.setFirstName(updatedUser.getFirstName());
 		admin.setLastName(updatedUser.getLastName());
@@ -204,6 +225,8 @@ public class AdminController {
 		return new ResponseEntity<AdminEntity>(admin, HttpStatus.OK);
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{adminId}")
 	public ResponseEntity<?> deleteAdminByID(@PathVariable Integer adminId) {
 		Optional<AdminEntity> admin = adminRepository.findById(adminId);
@@ -218,6 +241,8 @@ public class AdminController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
+	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
 	public ResponseEntity<?> deleteAdminByUsername(@PathVariable String username) {
 		Optional<AdminEntity> admin = adminRepository.findByUsername(username);
@@ -228,7 +253,7 @@ public class AdminController {
 			return new ResponseEntity<>("Admin with " + username + " username has been successfully deleted.",
 					HttpStatus.OK);
 		} else {
-	        logger.error("There is no admin found with " + username);
+	        logger.error("There is no admin found with " + username + " username.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Admin not found"), HttpStatus.NOT_FOUND);
 		}
 

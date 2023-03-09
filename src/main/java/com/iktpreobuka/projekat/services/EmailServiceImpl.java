@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService{
 	
 	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
-
+	
 	@Override
 	public void sendSimpleMessage(EmailDTO email) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -34,6 +34,7 @@ public class EmailServiceImpl implements EmailService{
 	}
 
 	public void messageToParents(TeacherSubject teachingSubject, StudentEntity student, Integer gradeValue) {
+		
 		EmailDTO email = new EmailDTO();
 
 		email.setTo(student.getParent().getEmail());
