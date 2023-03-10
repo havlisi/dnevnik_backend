@@ -549,6 +549,8 @@ public class GradeDaoImpl implements GradeDao {
 		
         logger.info("Checking which user is logged in.");
 
+        logger.debug(currentUser.getRole());
+        
 		if (currentUser.getRole().equals("ROLE_ADMIN")) {
 			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " added new grade.");
 		} else if (currentUser.getRole().equals("ROLE_TEACHER")) {
@@ -629,15 +631,13 @@ public class GradeDaoImpl implements GradeDao {
 		
         logger.info("Checking which user is logged in.");
 
-		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+        if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " can update a grade.");
+		} else if (currentUser.getRole().equals("ROLE_TEACHER")) {
 			if (!teachingSubject.getTeacher().getId().equals(currentUser.getId())) {
 				logger.error("Unauthorized teacher tried to update a grade.");
 				return new ResponseEntity<RESTError>(new RESTError(4, "Teacher is not authorized to add/update grade for this student."), HttpStatus.UNAUTHORIZED);
 			}
-		}
-		
-		if (currentUser.getRole().equals("ROLE_ADMIN")) {
-			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " can update a grade.");
 		} else {
 			logger.error("Unauthorized user tried to give grade.");
 			return new ResponseEntity<RESTError>(new RESTError(5, "User is not authorized to add/update grade."), HttpStatus.UNAUTHORIZED);
