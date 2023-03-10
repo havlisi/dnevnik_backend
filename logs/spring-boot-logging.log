@@ -11290,3 +11290,170 @@ This generated password is for development use only. Your security configuration
 2023-03-10 16:57:43.633  WARN 12544 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2023-03-10 16:57:44.517  INFO 12544 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
 2023-03-10 16:57:44.531  INFO 12544 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 8.957 seconds (JVM running for 11.117)
+2023-03-10 17:03:34.665  INFO 12544 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-10 17:03:34.665  INFO 12544 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-10 17:03:34.667  INFO 12544 --- [http-nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 2 ms
+2023-03-10 17:03:34.803 ERROR 12544 --- [http-nio-8080-exec-2] o.a.c.c.C.[.[.[.[dispatcherServlet]      : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:399) ~[jjwt-impl-0.11.5.jar:0.11.5]
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529) ~[jjwt-impl-0.11.5.jar:0.11.5]
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589) ~[jjwt-impl-0.11.5.jar:0.11.5]
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173) ~[jjwt-impl-0.11.5.jar:0.11.5]
+	at com.iktpreobuka.projekat.config.JWTAuthorizationFilter.validateToken(JWTAuthorizationFilter.java:48) ~[classes/:?]
+	at com.iktpreobuka.projekat.config.JWTAuthorizationFilter.doFilterInternal(JWTAuthorizationFilter.java:64) ~[classes/:?]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:112) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:82) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:346) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:221) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186) ~[spring-security-web-5.7.6.jar:5.7.6]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.71.jar:9.0.71]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+
+2023-03-10 17:03:54.739  INFO 12544 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 37 ID.
+2023-03-10 17:03:54.739  INFO 12544 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:03:54.742 ERROR 12544 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:04:01.531  INFO 12544 --- [http-nio-8080-exec-5] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:04:01.531  INFO 12544 --- [http-nio-8080-exec-5] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:04:01.533 ERROR 12544 --- [http-nio-8080-exec-5] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:04:05.072  INFO 12544 --- [http-nio-8080-exec-6] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:04:05.073  INFO 12544 --- [http-nio-8080-exec-6] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:04:05.076 ERROR 12544 --- [http-nio-8080-exec-6] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:04:12.148  INFO 12544 --- [http-nio-8080-exec-7] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:04:12.148  INFO 12544 --- [http-nio-8080-exec-7] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:04:12.151 ERROR 12544 --- [http-nio-8080-exec-7] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:04:18.301  INFO 12544 --- [http-nio-8080-exec-8] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:04:18.301  INFO 12544 --- [http-nio-8080-exec-8] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:04:18.305 ERROR 12544 --- [http-nio-8080-exec-8] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:08:14.909  INFO 12544 --- [http-nio-8080-exec-2] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:08:14.909  INFO 12544 --- [http-nio-8080-exec-2] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:08:14.912 ERROR 12544 --- [http-nio-8080-exec-2] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:09:45.498  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-10 17:09:45.589  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-10 17:09:45.597  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-10 17:09:45.613  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-10 17:09:45.615  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-10 17:09:45.651  INFO 12544 --- [RMI TCP Connection(15)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-10 17:10:03.673  INFO 8588 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 8588 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-10 17:10:03.861  INFO 8588 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-10 17:10:07.016  INFO 8588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-10 17:10:07.266  INFO 8588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 225 ms. Found 8 JPA repository interfaces.
+2023-03-10 17:10:10.396  INFO 8588 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-10 17:10:10.461  INFO 8588 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-10 17:10:10.462  INFO 8588 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-10 17:10:11.058  INFO 8588 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-10 17:10:11.058  INFO 8588 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6972 ms
+2023-03-10 17:10:19.799  INFO 8588 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-10 17:10:21.246  INFO 8588 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-10 17:10:25.418  INFO 8588 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-10 17:10:27.410  WARN 8588 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: a13a6e0f-375a-477f-91b2-b79f7cf43617
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2023-03-10 17:10:27.630  INFO 8588 --- [main] o.s.s.w.DefaultSecurityFilterChain       : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@39dee5fd, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b897ffb, org.springframework.security.web.context.SecurityContextPersistenceFilter@452d6fd, org.springframework.security.web.header.HeaderWriterFilter@6b8a9e1, org.springframework.security.web.authentication.logout.LogoutFilter@797ca322, com.iktpreobuka.projekat.config.JWTAuthorizationFilter@2ec258f1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ccea4be, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@40f931ec, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3074575a, org.springframework.security.web.session.SessionManagementFilter@1c3400df, org.springframework.security.web.access.ExceptionTranslationFilter@1eb207c3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4010f232]
+2023-03-10 17:10:27.730  WARN 8588 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-10 17:10:28.436  INFO 8588 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-10 17:10:28.450  INFO 8588 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 27.035 seconds (JVM running for 30.37)
+2023-03-10 17:10:31.039  INFO 8588 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-10 17:10:31.040  INFO 8588 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-10 17:10:31.044  INFO 8588 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 3 ms
+2023-03-10 17:10:45.739  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:10:45.740  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:10:45.747  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.GradeDaoImpl                     : Teacher Dragana Havlovic gave Isidora Havlovic 3 from fizika.
+2023-03-10 17:10:45.906  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.EmailServiceImpl                 : Setting up parents email address
+2023-03-10 17:10:45.907  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.EmailServiceImpl                 : Setting up subject of the email with teaching subject in the title
+2023-03-10 17:10:45.910  INFO 8588 --- [http-nio-8080-exec-3] c.i.p.s.EmailServiceImpl                 : Setting up message of the email with information about grade, to which student is given, which subject and who has given it
+2023-03-10 17:10:57.077  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Checking if student studies the teaching subject with 36 ID.
+2023-03-10 17:10:57.077  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:10:57.084  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.GradeDaoImpl                     : Teacher Dragana Havlovic gave Isidora Havlovic 3 from fizika.
+2023-03-10 17:10:57.113  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.EmailServiceImpl                 : Setting up parents email address
+2023-03-10 17:10:57.114  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.EmailServiceImpl                 : Setting up subject of the email with teaching subject in the title
+2023-03-10 17:10:57.116  INFO 8588 --- [http-nio-8080-exec-4] c.i.p.s.EmailServiceImpl                 : Setting up message of the email with information about grade, to which student is given, which subject and who has given it
+2023-03-10 17:12:35.832  INFO 8588 --- [http-nio-8080-exec-7] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:12:35.832 ERROR 8588 --- [http-nio-8080-exec-7] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:13:22.110  INFO 8588 --- [http-nio-8080-exec-8] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:13:22.110 ERROR 8588 --- [http-nio-8080-exec-8] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:13:25.066  INFO 8588 --- [http-nio-8080-exec-9] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:13:25.067 ERROR 8588 --- [http-nio-8080-exec-9] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:13:32.042  INFO 8588 --- [http-nio-8080-exec-10] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:13:32.042 ERROR 8588 --- [http-nio-8080-exec-10] c.i.p.s.GradeDaoImpl                     : Unauthorized user tried to give grade.
+2023-03-10 17:13:58.256  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2023-03-10 17:13:58.355  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] o.a.c.c.StandardService                  : Stopping service [Tomcat]
+2023-03-10 17:13:58.358  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] o.a.c.c.C.[.[.[/]                        : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-03-10 17:13:58.390  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-10 17:13:58.393  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-03-10 17:13:58.426  INFO 8588 --- [RMI TCP Connection(8)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+2023-03-10 17:14:09.867  INFO 13580 --- [main] c.i.p.ProjekatEDnevnikApplication        : Starting ProjekatEDnevnikApplication using Java 17.0.5 on DESKTOP-7FL92IR with PID 13580 (C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik\target\classes started by Havlovic in C:\Users\Havlovic\Documents\workspace-spring-tool-suite-4-4.17.0.RELEASE\projekat_dnevnik)
+2023-03-10 17:14:09.899  INFO 13580 --- [main] c.i.p.ProjekatEDnevnikApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-03-10 17:14:13.965  INFO 13580 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-10 17:14:14.480  INFO 13580 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 477 ms. Found 8 JPA repository interfaces.
+2023-03-10 17:14:17.270  INFO 13580 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port(s): 8080 (http)
+2023-03-10 17:14:17.316  INFO 13580 --- [main] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2023-03-10 17:14:17.317  INFO 13580 --- [main] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-03-10 17:14:18.072  INFO 13580 --- [main] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+2023-03-10 17:14:18.072  INFO 13580 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8046 ms
+2023-03-10 17:14:22.211  INFO 13580 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2023-03-10 17:14:22.849  INFO 13580 --- [main] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2023-03-10 17:14:25.019  INFO 13580 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-10 17:14:26.420  WARN 13580 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 45d1795f-958f-47c7-bb53-4693704b0c69
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2023-03-10 17:14:26.736  INFO 13580 --- [main] o.s.s.w.DefaultSecurityFilterChain       : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@40ef385f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1a4c6e74, org.springframework.security.web.context.SecurityContextPersistenceFilter@44cab872, org.springframework.security.web.header.HeaderWriterFilter@4c81e7c2, org.springframework.security.web.authentication.logout.LogoutFilter@25fc2b8f, com.iktpreobuka.projekat.config.JWTAuthorizationFilter@28d728f1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2db75e32, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1f2d0ca2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@51d6c42d, org.springframework.security.web.session.SessionManagementFilter@70fe33fa, org.springframework.security.web.access.ExceptionTranslationFilter@1ece052b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1a865ebf]
+2023-03-10 17:14:27.033  WARN 13580 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-10 17:14:28.220  INFO 13580 --- [main] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-10 17:14:28.248  INFO 13580 --- [main] c.i.p.ProjekatEDnevnikApplication        : Started ProjekatEDnevnikApplication in 21.104 seconds (JVM running for 27.142)
+2023-03-10 17:14:32.151  INFO 13580 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-03-10 17:14:32.151  INFO 13580 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2023-03-10 17:14:32.156  INFO 13580 --- [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 4 ms
+2023-03-10 17:14:41.308  INFO 13580 --- [http-nio-8080-exec-3] c.i.p.s.GradeDaoImpl                     : Checking which user is logged in.
+2023-03-10 17:14:41.372  INFO 13580 --- [http-nio-8080-exec-3] c.i.p.s.GradeDaoImpl                     : Saving grade to the database
