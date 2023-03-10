@@ -548,16 +548,24 @@ public class GradeDaoImpl implements GradeDao {
 		}
 		
         logger.info("Checking which user is logged in.");
-		
-		if (currentUser.getRole().equals("ROLE_TEACHER")) {
-			if (!teachingSubject.getTeacher().getId().equals(currentUser.getId())) {
-				logger.error("Unauthorized teacher tried to give grade.");
-				return new ResponseEntity<RESTError>(new RESTError(4, "Teacher is not authorized to grade this student."), HttpStatus.UNAUTHORIZED);
-			}
-		}
 
 		if (currentUser.getRole().equals("ROLE_ADMIN")) {
 			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " added new grade.");
+		} else if (currentUser.getRole().equals("ROLE_TEACHER")) {
+			TeacherEntity teacher = (TeacherEntity) currentUser;
+			boolean smeDaGaOceni = false;
+			for (TeacherSubject teacherSubject : student.getTeacherSubjects()) {
+				for (TeacherSubject teacherSubject2 : teacher.getTeacherSubject()) {
+					if (teacherSubject.getId().equals(teacherSubject2.getId())) {
+						smeDaGaOceni = true;
+						break;
+					}
+				}
+			}
+			if (!smeDaGaOceni) {
+				logger.error("Unauthorized teacher tried to give grade.");
+				return new ResponseEntity<RESTError>(new RESTError(4, "Teacher is not authorized to grade this student."), HttpStatus.UNAUTHORIZED);
+			}
 		} else {
 			logger.error("Unauthorized user tried to give grade.");
 			return new ResponseEntity<RESTError>(new RESTError(5, "User is not authorized to grade students."), HttpStatus.UNAUTHORIZED);
@@ -681,21 +689,19 @@ public class GradeDaoImpl implements GradeDao {
 		
 		logger.info("Checking which user is logged in.");
 
-		if (currentUser.getRole().equals("ROLE_TEACHER")) {
+		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " can delete a grade.");
+		} else if (currentUser.getRole().equals("ROLE_TEACHER")) {
 			if (!teachingSubject.getTeacher().getId().equals(currentUser.getId())) {
 				logger.error("Unauthorized teacher tried to delete a grade.");
 				return new ResponseEntity<RESTError>(new RESTError(5, "Teacher is not authorized to delete grade."
 						+ " for this student."), HttpStatus.UNAUTHORIZED);
 			}
-		}
-		
-		if (currentUser.getRole().equals("ROLE_ADMIN")) {
-			logger.info("Admin " + currentUser.getFirstName() + " " + currentUser.getLastName() + " can delete a grade.");
 		} else {
 			logger.error("Unauthorized user tried to give grade.");
-			return new ResponseEntity<RESTError>(new RESTError(6, "User is not authorized to delete grade."), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<RESTError>(new RESTError(5, "User is not authorized to delete students."), HttpStatus.UNAUTHORIZED);
 		}
-				
+			
 		gradeRepository.delete(grade);
         logger.info("Deleting grade from the database");
 
