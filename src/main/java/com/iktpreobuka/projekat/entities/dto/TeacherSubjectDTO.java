@@ -11,19 +11,19 @@ public class TeacherSubjectDTO {
 	@Max(value = 8, message = "Class year must be between 1 and 8")
 	private Integer classYear;
 	
-	private TeacherEntity teacher;
+	private Integer teacher_id;
 	
-	private SubjectEntity subject;
+	private Integer subject_id;
 
 	public TeacherSubjectDTO() {}
-	
+
 	public TeacherSubjectDTO(
 			@Min(value = 1, message = "Class year must be between 1 and 8") @Max(value = 8, message = "Class year must be between 1 and 8") Integer classYear,
-			TeacherEntity teacher, SubjectEntity subject) {
+			Integer teacher_id, Integer subject_id) {
 		super();
 		this.classYear = classYear;
-		this.teacher = teacher;
-		this.subject = subject;
+		this.teacher_id = teacher_id;
+		this.subject_id = subject_id;
 	}
 
 	public Integer getClassYear() {
@@ -34,20 +34,20 @@ public class TeacherSubjectDTO {
 		this.classYear = classYear;
 	}
 
-	public TeacherEntity getTeacher() {
-		return teacher;
+	public Integer getTeacher_id() {
+		return teacher_id;
 	}
 
-	public void setTeacher(TeacherEntity teacher) {
-		this.teacher = teacher;
+	public void setTeacher_id(Integer teacher_id) {
+		this.teacher_id = teacher_id;
 	}
 
-	public SubjectEntity getSubject() {
-		return subject;
+	public Integer getSubject_id() {
+		return subject_id;
 	}
 
-	public void setSubject(SubjectEntity subject) {
-		this.subject = subject;
+	public void setSubject_id(Integer subject_id) {
+		this.subject_id = subject_id;
 	}
     
 }

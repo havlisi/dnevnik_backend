@@ -64,7 +64,7 @@ public class SubjectController {
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteSubject/by-id/{id}")
-	public ResponseEntity<?> deleteSubject(@PathVariable Integer id) {
+	public ResponseEntity<?> deleteSubjectById(@PathVariable Integer id) {
 		return subjectDaoImpl.deleteSubject(id);
 	}
 

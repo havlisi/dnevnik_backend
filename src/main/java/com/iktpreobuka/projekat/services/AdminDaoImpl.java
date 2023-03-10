@@ -43,18 +43,22 @@ public class AdminDaoImpl implements AdminDao {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(newUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 
 		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
         logger.info("Finding out whether there's a user with the same email.");
+        
+		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername());
+        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithEmail != null) {
 	        logger.error("There is a user with the same email.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
 		}
-
-		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
-        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithUsername != null) {
 	        logger.error("There is a user with the same username.");
@@ -86,6 +90,10 @@ public class AdminDaoImpl implements AdminDao {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(updatedUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 
 		AdminEntity admin = adminRepository.findById(admin_id).orElse(null);
@@ -99,6 +107,7 @@ public class AdminDaoImpl implements AdminDao {
 		admin.setLastName(updatedUser.getLastName());
 		admin.setUsername(updatedUser.getUsername());
 		admin.setEmail(updatedUser.getEmail());
+		admin.setPassword(updatedUser.getPassword());
 
 		adminRepository.save(admin);
         logger.info("Saving admin to the database");

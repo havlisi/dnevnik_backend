@@ -293,7 +293,7 @@ public class GradeDaoImpl implements GradeDao {
 		String hql = "";
 		
 	    if (firstsemester == true) {
-            logger.info("Finding " + user.get().getFirstName() + user.get().getLastName() + " final grade for " 
+            logger.info("Finding " + user.get().getFirstName() + " " + user.get().getLastName() + " final grade for " 
             		+ subject.get().getSubjectName() + " for first semester");
             
 	        hql = "SELECT u.firstName, u.lastName, sb.subjectName, "
@@ -306,7 +306,7 @@ public class GradeDaoImpl implements GradeDao {
 	            + "AND sb.id = :sbId " + "AND g.firstSemester = :firstsemester "
 	            + "GROUP BY g.student, sb.subjectName";
 	    } else {
-	    	logger.info("Finding " + user.get().getFirstName() + user.get().getLastName() + " final grade for " 
+	    	logger.info("Finding " + user.get().getFirstName() + " " + user.get().getLastName() + " final grade for " 
             		+ subject.get().getSubjectName() + " for second semester");
 	    	
 	        hql = "SELECT u.firstName, u.lastName, sb.subjectName, "
@@ -384,9 +384,11 @@ public class GradeDaoImpl implements GradeDao {
 		}
 		
 		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			logger.info("Admin is looking at students grades.");
 			return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
 		}
 
+		logger.error("Unauthorized access");
 		return new ResponseEntity<RESTError>(new RESTError(7, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
 	
@@ -499,9 +501,11 @@ public class GradeDaoImpl implements GradeDao {
 		}
 		
 		if (currentUser.getRole().equals("ROLE_ADMIN")) {
+			logger.info("Admin is looking at students grades.");
 			return new ResponseEntity<List<GradeEntity>>(result, HttpStatus.OK);
 		}
-
+		
+		logger.error("Unauthorized access");
 		return new ResponseEntity<RESTError>(new RESTError(7, "Unauthorized access"), HttpStatus.UNAUTHORIZED);
 	}
 	

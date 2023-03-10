@@ -48,18 +48,22 @@ public class TeacherDaoImpl implements TeacherDao {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(newUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 
 		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
         logger.info("Finding out whether there's a user with the same email.");
+        
+		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername());
+        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithEmail != null) {
 	        logger.error("There is a user with the same email.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
 		}
-
-		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
-        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithUsername != null) {
 	        logger.error("There is a user with the same username.");
@@ -92,6 +96,10 @@ public class TeacherDaoImpl implements TeacherDao {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(updatedUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 		
 		TeacherEntity teacher = teacherRepository.findById(id).orElse(null);
@@ -105,6 +113,7 @@ public class TeacherDaoImpl implements TeacherDao {
 		teacher.setLastName(updatedUser.getLastName());
 		teacher.setUsername(updatedUser.getUsername());
 		teacher.setEmail(updatedUser.getEmail());
+		teacher.setPassword(updatedUser.getPassword());
 
 		teacherRepository.save(teacher);
         logger.info("Saving teacher to the database");

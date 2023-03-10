@@ -32,8 +32,6 @@ public class UserDTO {
 	private String password;
 	
 	@NotNull(message = "Confirmation password must be provided.")
-	@Size(min = 5, message = "Password must be minimum "
-			+ "{min} characters long.")
 	private String confirmed_password;
 	
 	@Column(nullable = false)
@@ -47,7 +45,7 @@ public class UserDTO {
 			@NotNull(message = "Username must be provided.") @Size(min = 5, max = 25, message = "Username must be between {min} and {max} characters long.") String username,
 			@NotNull(message = "Please provide email address.") @Email(message = "Email is not valid.") String email,
 			@NotNull(message = "Password must be provided.") @Size(min = 5, message = "Password must be minimum {min} characters long.") String password,
-			@NotNull(message = "Password must be provided.") @Size(min = 5, message = "Password must be minimum {min} characters long.") String confirmed_password,
+			@NotNull(message = "Confirmation password must be provided.") String confirmed_password,
 			String role) {
 		super();
 		this.firstName = firstName;

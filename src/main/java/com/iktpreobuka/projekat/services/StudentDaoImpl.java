@@ -96,18 +96,22 @@ public class StudentDaoImpl {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(newUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 		
 		UserEntity existingUserWithEmail = userRepository.findByEmail(newUser.getEmail());
         logger.info("Finding out whether there's a user with the same email.");
+        
+		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername());
+        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithEmail != null) {
 	        logger.error("There is a user with the same email.");
 			return new ResponseEntity<RESTError>(new RESTError(1, "Email already exists"), HttpStatus.CONFLICT);
 		}
-
-		UserEntity existingUserWithUsername = userRepository.findByUsername(newUser.getUsername()).orElse(null);
-        logger.info("Finding out whether there's a user with the same username.");
 
 		if (existingUserWithUsername != null) {
 	        logger.error("There is a user with the same username.");
@@ -151,9 +155,10 @@ public class StudentDaoImpl {
 		studentRepository.save(student);
         logger.info("Saving student to the database");
 
-		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
+		return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
 	}
 	
+	//proveri
 	public ResponseEntity<?> setStudentsTeachingSubj(Integer teachSubj_id, Integer students_id) {
 		
 		StudentEntity student = studentRepository.findById(students_id).orElse(null);
@@ -191,6 +196,10 @@ public class StudentDaoImpl {
 		} else {
 	        logger.info("Validating if the users password matches the confirming password");
 			userValidator.validate(updatedUser, result);
+			if (result.hasErrors()) {
+		        logger.error("Validation errors detected.");
+		        return new ResponseEntity<>(result.getFieldError(), HttpStatus.BAD_REQUEST);
+		    }
 		}
 		
 		StudentEntity student = studentRepository.findById(id).orElse(null);
@@ -204,12 +213,14 @@ public class StudentDaoImpl {
 		student.setLastName(updatedUser.getLastName());
 		student.setUsername(updatedUser.getUsername());
 		student.setEmail(updatedUser.getEmail());
+		student.setPassword(updatedUser.getPassword());
 
 		studentRepository.save(student);
         logger.info("Saving student to the database");
 
 		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 	}
+	
 	
 	public ResponseEntity<?> deleteStudentByID(Integer id) {
 		Optional<StudentEntity> student = studentRepository.findById(id);
@@ -229,6 +240,7 @@ public class StudentDaoImpl {
 		}
 	}
 	
+	//proveri
 	public ResponseEntity<?> deleteStudentByUsername(String username) {
 		Optional<StudentEntity> student = studentRepository.findByUsername(username);
 
@@ -266,7 +278,7 @@ public class StudentDaoImpl {
 		}
 		
 		if (student.getParent().equals(parent)) {
-			parentRepository.delete(parent);
+			student.setParent(null);
 	        logger.info("Deleting parent with id " + parents_id + " from student with id " + students_id);
 
 		}
