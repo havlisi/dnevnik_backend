@@ -133,19 +133,23 @@ public class TeacherSubjectDaoImpl implements TeacherSubjectDao {
 		}
 
 		teacherSubjects.setClassYear(updatedTeacherSubject.getClassYear());
+		
+		SubjectEntity newSubject = subjectRepository.findById(updatedTeacherSubject.getSubject_id()).get();
 
-		if (updatedTeacherSubject.getSubject() == null) {
-	        logger.info("Subject value is null");
+		if (newSubject == null) {
+	        logger.error("Subject value is null");
 			return new ResponseEntity<RESTError>(new RESTError(2, "No subject found"), HttpStatus.NOT_FOUND);
 		}
-		teacherSubjects.setSubject(updatedTeacherSubject.getSubject());
+		teacherSubjects.setSubject(newSubject);
 		
-		if (updatedTeacherSubject.getTeacher() == null) {
-	        logger.info("Teacher value is null");
+		TeacherEntity newTeacher = teacherRepository.findById(updatedTeacherSubject.getTeacher_id()).get();
+		
+		if (newTeacher == null) {
+	        logger.error("Teacher value is null");
 			return new ResponseEntity<RESTError>(new RESTError(3, "No teacher found"), HttpStatus.NOT_FOUND);
 		}
 		
-		teacherSubjects.setTeacher(updatedTeacherSubject.getTeacher());
+		teacherSubjects.setTeacher(newTeacher);
 
 		teacherSubjectRepository.save(teacherSubjects);
         logger.info("Saving values for new teaching subject");
