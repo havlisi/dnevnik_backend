@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -18,12 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 
 @Entity
 @DiscriminatorValue("teacher_subject")
@@ -32,13 +30,13 @@ public class TeacherSubject {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(Views.Public.class)
+	//@JsonView(Views.Public.class)
 	@JsonProperty("ID")
 	private Integer id;
 	
 	@Min(value = 1, message = "Class year must be between 1 and 8")
 	@Max(value = 8, message = "Class year must be between 1 and 8")
-	@JsonView(Views.Public.class)
+	//@JsonView(Views.Public.class)
 	private Integer classYear;
 
 	@JsonIgnore

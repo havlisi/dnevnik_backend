@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.EmailDTO;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 
 @Service
 public class EmailServiceImpl implements EmailService{
@@ -19,7 +18,7 @@ public class EmailServiceImpl implements EmailService{
 	@Autowired
 	public JavaMailSender emailSender;
 	
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -37,8 +36,8 @@ public class EmailServiceImpl implements EmailService{
 		
 		EmailDTO email = new EmailDTO();
 
-		//email.setTo(student.getParent().getEmail());
-		email.setTo("isidorahavlovic@gmail.com");
+		email.setTo(student.getParent().getEmail());
+		//email.setTo("isidorahavlovic@gmail.com");
 		logger.info("Setting up parents email address");
 		
 		email.setSubject("Ocena - " + teachingSubject.getSubject().getSubjectName());

@@ -7,12 +7,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 
 @Component
 public class UserCustomValidator implements Validator {
 
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
 	@Override

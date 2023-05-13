@@ -14,7 +14,7 @@ import com.iktpreobuka.projekat.entities.UserEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
 import com.iktpreobuka.projekat.repositories.UserRepository;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
 import com.iktpreobuka.projekat.utils.UserCustomValidator;
@@ -31,7 +31,7 @@ public class AdminDaoImpl implements AdminDao {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
 	

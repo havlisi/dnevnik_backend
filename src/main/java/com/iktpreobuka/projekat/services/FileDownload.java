@@ -10,22 +10,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 
 @Controller
 @RequestMapping(path = "/api/project")
-public class FileDownloadController {
+public class FileDownload {
 
-	@JsonView(Views.Admin.class) //TODO samo administrator može da vidi/preuzme logove
+	//@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
-	@Secured("ROLE_ADMIN")
+	//@Secured("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.GET, value = "/download")
     public ResponseEntity<ByteArrayResource> downloadFile() throws IOException {
 
@@ -47,6 +47,6 @@ public class FileDownloadController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(resource);    
-        }
+	}
 
 }
