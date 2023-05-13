@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +19,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.AdminEntity;
 import com.iktpreobuka.projekat.entities.dto.UserDTO;
 import com.iktpreobuka.projekat.repositories.AdminRepository;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.services.AdminDaoImpl;
 import com.iktpreobuka.projekat.utils.RESTError;
 import com.iktpreobuka.projekat.utils.UserCustomValidator;
 
 @RestController
-@Secured("ROLE_ADMIN")
+//@Secured("ROLE_ADMIN")
 @RequestMapping(path = "/api/project/admin")
 public class AdminController {
 
@@ -38,12 +38,12 @@ public class AdminController {
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
 	
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
 	
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+	//@Secured("ROLE_ADMIN")
+	//@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAdmin() {
 		try {
@@ -62,8 +62,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-id/{adminId}")
 	public ResponseEntity<?> getAdminById(@PathVariable Integer adminId) {
 		Optional<AdminEntity> admin = adminRepository.findById(adminId);
@@ -76,8 +76,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-username/{username}")
 	public ResponseEntity<?> getAdminByUsername(@PathVariable String username) {
 		Optional<AdminEntity> admin = adminRepository.findByUsername(username);
@@ -90,8 +90,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstName/{firstName}")
 	public ResponseEntity<?> getAdminByFirstName(@PathVariable String firstName) {
 		List<AdminEntity> admins = adminRepository.findByFirstName(firstName);
@@ -104,8 +104,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-lastName/{lastName}")
 	public ResponseEntity<?> getAdminByLastName(@PathVariable String lastName) {
 		List<AdminEntity> admins = adminRepository.findByLastName(lastName);
@@ -118,8 +118,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-firstLetter/{firstLetter}")
 	public ResponseEntity<?> getAdminByFirstLetter(@PathVariable String firstLetter) {
 		List<AdminEntity> admins = adminRepository.findByFirstNameStartingWith(firstLetter);
@@ -132,8 +132,8 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.GET, value = "/by-email/{email}")
 	public ResponseEntity<?> getAdminByEmail(@PathVariable String email) {
 		Optional<AdminEntity> admin = adminRepository.findByEmail(email);
@@ -146,29 +146,29 @@ public class AdminController {
 		}
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.POST, value = "/newAdminUser")
 	public ResponseEntity<?> createAdmin(@Valid @RequestBody UserDTO newUser, BindingResult result) {
 		return adminDaoImpl.createAdmin(newUser, result);
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateAdmin/{admin_id}")
 	public ResponseEntity<?> updateAdmin(@Valid @RequestBody UserDTO updatedUser, BindingResult result, @PathVariable Integer admin_id) {
 		return adminDaoImpl.updateAdmin(updatedUser, result, admin_id);
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-id/{adminId}")
 	public ResponseEntity<?> deleteAdminByID(@PathVariable Integer adminId) {
 		return adminDaoImpl.deleteAdminByID(adminId);
 	}
 
-	@Secured("ROLE_ADMIN")
-	@JsonView(Views.Admin.class)
+//	@Secured("ROLE_ADMIN")
+//	@JsonView(Views.Admin.class)
 	@RequestMapping(method = RequestMethod.DELETE, value = "deleteAdmin/by-username/{username}")
 	public ResponseEntity<?> deleteAdminByUsername(@PathVariable String username) {
 		return adminDaoImpl.deleteAdminByUsername(username);

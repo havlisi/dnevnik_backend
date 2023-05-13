@@ -11,12 +11,11 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.iktpreobuka.projekat.security.Views;
+//import com.iktpreobuka.projekat.security.Views;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -24,18 +23,18 @@ public class GradeEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView(Views.Public.class)
+	//@JsonView(Views.Public.class)
 	@JsonProperty("ID")
 	private Integer id;
 	
 	@NotNull(message = "Grade must be provided")
 	@Min(value = 1, message = "Grade must be between 1 and 5")
 	@Max(value = 5, message = "Grade must be between 1 and 5")
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	private Integer grade;
 	
 	@NotNull(message = "The 'firstSemester' field must be set to true or false")
-	@JsonView(Views.Admin.class)
+	//@JsonView(Views.Admin.class)
 	private boolean firstSemester;
 	
 	@JsonIgnore
