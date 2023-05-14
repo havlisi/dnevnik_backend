@@ -158,7 +158,6 @@ public class StudentDaoImpl {
 //		return new ResponseEntity<ParentEntity>(parent, HttpStatus.OK);
 //	}
 //	
-//	//proveri
 //	public ResponseEntity<?> setStudentsTeachingSubj(Integer teachSubj_id, Integer students_id) {
 //		
 //		StudentEntity student = studentRepository.findById(students_id).orElse(null);
@@ -240,7 +239,6 @@ public class StudentDaoImpl {
 //		}
 //	}
 //	
-//	//proveri
 //	public ResponseEntity<?> deleteStudentByUsername(String username) {
 //		Optional<StudentEntity> student = studentRepository.findByUsername(username);
 //

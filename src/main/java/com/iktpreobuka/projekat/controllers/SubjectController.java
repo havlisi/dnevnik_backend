@@ -52,11 +52,11 @@ public class SubjectController {
 		}
 	}
 	
-//	@Secured("ROLE_ADMIN")
-//	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
-//	public ResponseEntity<?> createSubject(@Valid @RequestBody SubjectDTO newSubject, BindingResult result) {
-//		return subjectDaoImpl.createSubject(newSubject, result);
-//	}
+	//@Secured("ROLE_ADMIN")
+	@RequestMapping(method = RequestMethod.POST, value = "/newSubject")
+	public ResponseEntity<?> createSubject(@Valid @RequestBody SubjectDTO newSubject, BindingResult result) {
+		return subjectDaoImpl.createSubject(newSubject, result);
+	}
 //
 //	@Secured("ROLE_ADMIN")
 //	@RequestMapping(method = RequestMethod.PUT, value = "/updateSubject/{id}")
