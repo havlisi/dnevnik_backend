@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StudentEntity extends UserEntity {
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	    name = "student_teacherSubject",
 	    joinColumns = {@JoinColumn(name = "student_id")},
@@ -32,10 +32,10 @@ public class StudentEntity extends UserEntity {
 	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private List<GradeEntity> grades = new ArrayList<>();
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent")
 	private ParentEntity parent;
 

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-//import com.iktpreobuka.projekat.security.Views;
+import com.iktpreobuka.projekat.security.Views;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -21,18 +21,15 @@ public class SubjectEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	//@JsonView(Views.Public.class)
 	@JsonProperty("ID")
 	private Integer id;
 	
 	@NotNull(message = "Subject name must be provided.")
-	//@JsonView(Views.Public.class)
 	private String subjectName;
 	
-	//@JsonView(Views.Admin.class)
 	private Integer fondCasova;
 	
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private List<TeacherSubject> teacherSubjects = new ArrayList<>();
 
 	public SubjectEntity() {}
