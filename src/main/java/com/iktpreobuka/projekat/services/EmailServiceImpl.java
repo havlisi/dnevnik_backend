@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.projekat.entities.StudentEntity;
 import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.EmailDTO;
-//import com.iktpreobuka.projekat.security.Views;
+import com.iktpreobuka.projekat.security.Views;
 
 @Service
 public class EmailServiceImpl implements EmailService{
@@ -18,7 +18,7 @@ public class EmailServiceImpl implements EmailService{
 	@Autowired
 	public JavaMailSender emailSender;
 	
-	//@JsonView(Views.Admin.class)
+	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
 	@Override

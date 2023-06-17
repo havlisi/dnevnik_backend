@@ -6,12 +6,15 @@ public class UserTokenDTO {
 	
 	private String token;
 
+	private String role;
+	
 	public UserTokenDTO() {}
 	
-	public UserTokenDTO(String email, String token) {
+	public UserTokenDTO(String email, String token, String role) {
 		super();
 		this.email = email;
 		this.token = token;
+		this.role = role;
 	}
 
 	public String getEmail() {
@@ -29,4 +32,13 @@ public class UserTokenDTO {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 }

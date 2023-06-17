@@ -13,8 +13,6 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-//import com.iktpreobuka.projekat.security.Views;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -23,31 +21,26 @@ public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	//@JsonView(Views.Public.class)
 	@JsonProperty("ID")
 	private Integer id;
 	
 	@NotNull(message = "First name must be provided.")
 	@Size(min = 2, max = 30, message = "First name must be between "
 			+ "{min} and {max} characters long.")
-	//@JsonView(Views.Public.class)
 	private String firstName;
 	
 	@NotNull(message = "Last name must be provided.")
 	@Size(min = 2, max = 30, message = "Last name must be between "
 			+ "{min} and {max} characters long.")
-	//@JsonView(Views.Public.class)
 	private String lastName;
 
 	@NotNull(message = "Username must be provided.")
 	@Size(min = 5, max = 25, message = "Username must be between "
 			+ "{min} and {max} characters long.")
-	//@JsonView(Views.Public.class)
 	private String username;
 	
 	@NotNull(message = "Please provide email address.")
 	@Email(message = "Email is not valid.")
-	//@JsonView(Views.Admin.class)
 	private String email;
 	
 	@NotNull(message = "Password must be provided.")
@@ -57,7 +50,6 @@ public class UserEntity {
 	private String password;
 	
 	@Column(nullable = false)
-	//@JsonView(Views.Public.class)
 	private String role;
 
 	public UserEntity() {}

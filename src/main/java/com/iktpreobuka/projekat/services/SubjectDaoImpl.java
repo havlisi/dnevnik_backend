@@ -13,7 +13,7 @@ import com.iktpreobuka.projekat.entities.TeacherSubject;
 import com.iktpreobuka.projekat.entities.dto.SubjectDTO;
 import com.iktpreobuka.projekat.repositories.SubjectRepository;
 import com.iktpreobuka.projekat.repositories.TeacherSubjectRepository;
-//import com.iktpreobuka.projekat.security.Views;
+import com.iktpreobuka.projekat.security.Views;
 import com.iktpreobuka.projekat.utils.ErrorMessageHelper;
 import com.iktpreobuka.projekat.utils.RESTError;
 
@@ -26,7 +26,7 @@ public class SubjectDaoImpl {
 	@Autowired
 	private TeacherSubjectRepository teacherSubjectRepository;
 	
-//	@JsonView(Views.Admin.class)
+	@JsonView(Views.Admin.class)
 	protected final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 
 	
